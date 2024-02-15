@@ -2,14 +2,13 @@ Reference: https://www.youtube.com/watch?v=SqcY0GlETPk
 
 The project requires the latest LTS version of node: https://nodejs.org/en/download
 
-When running for the application for the first time, input the following commands:
-**
-npm install
-npm run dev
-npm i bootstrap@5.2.3
-**
+When running for the application for the first time, input the following commands
+*npm install*
+*npm run dev*
+*npm i bootstrap@5.2.3*
 
-If it's not the first time running, input only:
+
+If it's not the first time running, input only
 *npm run dev*
 
 
