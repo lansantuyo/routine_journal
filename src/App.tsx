@@ -97,10 +97,14 @@ export default function App() {
                             newEntry={createNewEntry}
                             deleteEntry={deleteEntry}
                         />
-                        <Editor
-                            tempEntryText={tempEntryText}
-                            setTempEntryText={setTempEntryText}
-                        />
+                        {
+                            currentEntryId &&
+                            entries.length > 0 &&
+                            <Editor
+                                tempEntryText={tempEntryText}
+                                setTempEntryText={setTempEntryText}
+                            />
+                        }
                     </Split>
                     :
                     <div className="no-entries">
