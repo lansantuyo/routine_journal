@@ -7,26 +7,26 @@ interface Note {
 }
 
 interface SidebarProps {
-    notes: Note[];
-    currentNote: Note;
-    setCurrentNoteId: (id: string) => void;
-    newNote: () => void;
-    deleteNote: (id: string) => void;
+    entries: Note[];
+    currentEntry: Note;
+    setCurrentEntryId: (id: string) => void;
+    newEntry: () => void;
+    deleteEntry: (id: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = (props) => {
-    const noteElements = props.notes.map((note, index) => (
+    const noteElements = props.entries.map((note, index) => (
         <div key={note.id}>
             <div
-                className={`title ${note.id === props.currentNote.id ? "selected-note" : ""}`}
-                onClick={() => props.setCurrentNoteId(note.id)}
+                className={`title ${note.id === props.currentEntry.id ? "selected-note" : ""}`}
+                onClick={() => props.setCurrentEntryId(note.id)}
             >
                 <h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
                 <button
                     className="delete-btn"
                     onClick={(e) => {
                         e.stopPropagation(); // Prevent onClick from triggering when the button is clicked
-                        props.deleteNote(note.id);
+                        props.deleteEntry(note.id);
                     }}
                 >
                     <i className="gg-trash trash-icon"></i>
@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
         <section className="pane sidebar">
             <div className="sidebar--header">
                 <h3>Notes</h3>
-                <button className="new-note" onClick={props.newNote}>+</button>
+                <button className="new-entry" onClick={props.newEntry}>+</button>
             </div>
             {noteElements}
         </section>
