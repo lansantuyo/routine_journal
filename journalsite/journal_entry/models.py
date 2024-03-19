@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+
+class Journal(models.Model):
+    entry_name = models.CharField(max_length=50)
+    entry_description = models.TextField(max_length=1000)
+    entry_date = models.DateField()
