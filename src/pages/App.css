@@ -42,3 +42,34 @@
 .read-the-docs {
   color: #888;
 } */
+
+/* html, body, div {
+  height: 100%
+} */
+
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 64px;
+  color: #fff;
+}
+
+h2 {
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  font-size: 60px;
+}
+
+.flex-item {
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-flex: 1 0 auto;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+  /* background: #99f; */
+  margin: 5px 0 5px 5px;
+  vertical-align: middle;
+}
