@@ -10,6 +10,7 @@ When running for the application for the first time, input the following command
 
 *npm i bootstrap@5.2.3*
 
+*npm install react-router-dom*
 
 If it's not your first time running, input only:
 

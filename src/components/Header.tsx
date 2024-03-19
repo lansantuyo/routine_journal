@@ -1,32 +1,36 @@
-import React from 'react'
+import {
+    Flex,
+    AppShell,
+    Burger,
+    Button,
+    useMantineColorScheme,
+    useComputedColorScheme,
+} from '@mantine/core';
 
-interface Props {
-    children: React.ReactNode
-}
+import {FaSun, FaMoon} from 'react-icons/fa';
 
-const Header = ({children}: Props) => {
+const Header = ({toggleDesktop, toggleMobile, mobileOpened, desktopOpened}: any) => {
+    // const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+    // const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+    const {setColorScheme} = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
+
     return (
-        <div style={{position: "relative", display: "flex", alignItems: "center"}}>
-
-            <div className='flex-item'>
-                <h1>Calendar Here</h1>
-            </div>
-
-            <div className='flex-item'>
-                <h2 style={{textAlign: "left"}}>
-                    Journal of
-                </h2>
-                <h1 style={{textAlign: "left"}}>
-                    {children}
-                </h1>
-            </div>
-
-            <div className='flex-item'>
-                <h1>Hamburger Here</h1>
-            </div>
-
-        </div>
-    )
+        <AppShell.Header>
+            <Flex justify="space-between" align='center' style={{padding: '10px 20px'}}>
+                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom='sm' size='sm' />
+                <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom='sm' size='sm' />
+                <div>🤓Test Page🤓</div>
+                <Button size='sm' variant='link' onClick={toggleColorScheme}>
+                    {computedColorScheme === "dark" ? <FaSun /> :<FaMoon />}
+                </Button>
+            </Flex>
+        </AppShell.Header>
+    );
 }
 
 export default Header
