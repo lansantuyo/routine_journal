@@ -1,7 +1,7 @@
 import './App.css'
-import Navbar from "./components/Navbar";
-import Header from "./components/Header";
-import RouterSwitcher from "./components/RouterSwitcher";
+import Navbar from "../components/Navbar";
+import Header from "../components/Header";
+import RouterSwitcher from "../components/RouterSwitcher";
 
 import '@mantine/core/styles.css';
 
@@ -10,6 +10,7 @@ import {
 } from '@mantine/core';
 
 import {useDisclosure} from "@mantine/hooks";
+import React from 'react';
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
