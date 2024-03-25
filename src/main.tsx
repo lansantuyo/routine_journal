@@ -12,8 +12,19 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 //Source: https://mantine.dev/theming/mantine-provider/
 document.body.style.backgroundColor = "#543f3f";
 const theme = createTheme({
-    fontFamily: 'Inter, sans-serif',
-    headings: { fontFamily: 'Monaco, Courier, monospace' },
+    fontFamily: 'Inter',
+    headings: { fontFamily: 'Inter',
+        sizes: {
+            h1: {
+                fontWeight: '800',
+                fontSize: '64px',
+            },              
+            h2: {
+                fontWeight: '400',
+                fontSize: '60px',
+            },
+        }
+    },
     // primaryColor: '#543f3f',
     colors: {
         //https://www.color-hex.com/color-palette/30023

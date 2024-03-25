@@ -1,33 +1,14 @@
-// import './HomePage.css';
-// import React from "react";
-// import * as Mantine from "@mantine/core";
-
-
-// export default function HomePage() {
-//     return (
-//         <div>
-//             <Mantine.Container>
-//                 <div className="row">
-//                     Column 1
-//                     Column 2
-//                     <div className="col">
-//                         <h1>Column 3</h1>
-//                 </div>
-//                 </div>
-//             </Mantine.Container>
-//         </div>
-//     );
-//   }
-
 //Source: https://mantine.dev/app-shell/?e=CollapseDesktop&s=code
-import React from 'react';
-import { AppShell, Burger, Button, Drawer, Group, Stack } from '@mantine/core';
+import { useState } from 'react';
+import { AppShell, Burger, Container, Space, Group, Stack, Collapse } from '@mantine/core';
+import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 
 export default function HomePage() {
+    const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
 
     return (
@@ -67,11 +48,31 @@ export default function HomePage() {
                 <Link to ="/" className='link'>Summary</Link>
             </Stack>
         </AppShell.Aside>
-        
-        {/* <Drawer opened = {opened} onClose={toggleDesktop} offset={15} position = 'right' title="Hi" >
-            <Drawer.Body color='white'> </Drawer.Body>
-        </Drawer> */}
-        <AppShell.Main>Main</AppShell.Main>
+
+        <AppShell.Main>
+            <div style={{position: 'fixed', top: '100px',left: '200px'}}>
+                    <DatePicker 
+                        allowDeselect
+                        value={value}
+                        onChange={setValue}
+                        maxLevel="month"
+                        size='xl'
+                        monthLabelFormat="MMMM"
+                        // bg={'cyan'}
+                        styles={{
+                            day: {
+                                color: '#543f3f',
+                                backgroundColor: '#ead8c2',
+                            }
+                        }}
+                    />
+            </div>
+            <div style={{position: 'fixed', top: '100px', left: '800px'}}>
+                <h2>Journal of</h2>
+                <h1>USERNAME :D</h1>
+            </div>
+
+        </AppShell.Main>
     </AppShell>
   );
 }
