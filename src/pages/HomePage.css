@@ -6,3 +6,11 @@
     text-shadow: 0px 1px 1px #000000;
     text-align: center;
 }
+
+.day{
+    &[data-selected]{
+        color: #000000;
+        background-color: #000000;
+    };
+
+}
