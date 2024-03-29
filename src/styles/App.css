@@ -49,14 +49,16 @@
 
 h1 {
   font-family: 'Inter', sans-serif;
+  font-weight: 500;
   font-size: 64px;
   color: #fff;
 }
 
 h2 {
-  font-family: 'Inter', sans-serif;
-  color: #fff;
+  font-family: 'Inter';
+  font-weight: 400;
   font-size: 60px;
+  color: #fff;
 }
 
 .flex-item {
