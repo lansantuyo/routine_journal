@@ -4,7 +4,7 @@ import { AppShell, Burger, Container, Space, Group, Stack, Collapse, Select } fr
 import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import '../styles/HomePage.css';
 
 
 export default function HomePage() {

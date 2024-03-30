@@ -1,29 +1,63 @@
-// JournalEntry.tsx
-import React from 'react';
-import Header from '../components/Header';
-import { TextInput, Button } from '@mantine/core'; 
-import TextComponent from '../components/Text';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppShell, Burger, Container, Space, Stack, TextInput, Button } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import '../styles/JournalEntryPage.css';
 
-const JournalEntry = () => {
+export default function JournalEntryPage() {
+    const [entry, setEntry] = useState('');
+    const [currentDate, setCurrentDate] = useState(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+    const [opened, { toggle: toggleDesktop }] = useDisclosure();
+
+    const handleSubmit = () => {
+        console.log('Journal Entry:', entry);
+        setEntry('');
+    };
+
     return (
-        <Header> 
-            <div className="journal-entry">
-                <h1>{new Date().toLocaleDateString()} Journal</h1>
-                <div>
-                    <h2>Today I did:</h2>
-                    <TextInput
-                        placeholder="Enter journal here..."
-                        style={{ marginBottom: '10px' }}
-                    />
-                    <ul>
-                        <li>[activity]</li>
-                        <li>[activity]</li>
-                    </ul>
-                    <TextComponent /> 
-                </div>
-            </div>
-        </Header>
-    );
-};
+        <AppShell
+            layout="alt"
+            header={{ height: 60 }}
+            padding="md"
+        >
+            <AppShell.Main>
+                <Container size="lg" className="journal-container">
+                    <h1 className="journal-title">{currentDate} Journal Entry</h1>
+                    <Space h="lg" />
 
-export default JournalEntry;
+                    <TextInput
+                        placeholder="Enter your journal entry here..."
+                        value={entry}
+                        onChange={(event) => setEntry(event.target.value)}
+                        className="journal-input"
+                    />
+
+                   {/* Button to submit journal entry */}
+                    <Button onClick={handleSubmit} className="journal-submit-button">Submit</Button>
+                </Container>
+            </AppShell.Main>
+
+            {/* Sidebar */}
+            <AppShell.Aside p="md">
+                <Stack align='center' justify='center' gap='xl'>
+                    <Burger
+                        opened={opened} 
+                        onClick={toggleDesktop} 
+                        visibleFrom="sm" 
+                        size="md" 
+                        color='white' 
+                        mt= '10' 
+                        ml='240'
+                        bg={'coffee.5'}
+                    />
+                    <Link to ="/" className='link'>Homepage</Link>
+                    <Link to ="/" className='link'>Journal Entry</Link>
+                    <Link to ="/" className='link'>Activity</Link>
+                    <Link to ="/" className='link'>Timer</Link>
+                    <Link to ="/" className='link'>Activity Creation</Link>
+                    <Link to ="/" className='link'>Summary</Link>
+                </Stack>
+            </AppShell.Aside>
+        </AppShell>
+    );
+}

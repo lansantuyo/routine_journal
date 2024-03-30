@@ -22,7 +22,7 @@ const Navbar = () => {
             />
             <NavLink
                 label="Journal"
-                onClick={() => navigate('/Journal')}
+                onClick={() => navigate('/JournalEntryPage')}
                 style={{ margin: '5px' }}
             />
             <NavLink onClick={() => navigate('/Homepage')} style={{ margin: '5px' }}>Homepage</NavLink>

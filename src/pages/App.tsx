@@ -1,7 +1,7 @@
-import './App.css'
-import Navbar from "./components/Navbar";
-import Header from "./components/Header";
-import RouterSwitcher from "./components/RouterSwitcher";
+import '../styles/App.css'
+import Navbar from "../components/Navbar";
+import Header from "../components/Header";
+import RouterSwitcher from "../components/RouterSwitcher";
 
 import '@mantine/core/styles.css';
 

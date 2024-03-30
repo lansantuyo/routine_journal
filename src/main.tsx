@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './pages/App'
-import './index.css'
+import './styles/index.css'
 import {createTheme, MantineProvider} from "@mantine/core";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import NotFoundPage from './pages/NotFoundPage';
+import HomePage from './pages/HomePage';
 
 
 //Source: https://mantine.dev/theming/mantine-provider/
