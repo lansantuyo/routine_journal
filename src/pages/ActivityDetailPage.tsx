@@ -20,7 +20,7 @@ export default function ActivityDetailPage() {
             }}
             padding="md"
         >
-            <AppShell.Header withBorder={false} bg='coffee.5'>
+            {/* <AppShell.Header withBorder={false} bg='coffee.5'>
                 <Stack align='center' justify='flex-end' gap='md'>
                     <Burger opened={opened} onClick={toggleDesktop} visibleFrom="sm" size="md" color='white' />
                 </Stack>
@@ -43,7 +43,7 @@ export default function ActivityDetailPage() {
                     <Link to="/activity-creation" className='link'>Activity Creation</Link>
                     <Link to="/summary" className='link'>Summary</Link>
                 </Stack>
-            </AppShell.Aside>
+            </AppShell.Aside> */}
 
             <AppShell.Main>
                 <Container size="xl" style={{ padding: 'md' }}>

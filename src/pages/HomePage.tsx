@@ -22,13 +22,13 @@ export default function HomePage() {
             }}
             padding="md"
         >
-        <AppShell.Header withBorder={false} bg='coffee.5'>
+        {/* <AppShell.Header withBorder={false} bg='coffee.5'>
             <Group h="100%" px="md" justify='flex-end'>
                 <Burger opened={opened} onClick={toggleDesktop} visibleFrom="sm" size="md" color='white' mt= '25' mr='100'/>
             </Group>
-        </AppShell.Header>
+        </AppShell.Header> */}
 
-        <AppShell.Aside bg = 'coffee.3' p="md">
+        {/* <AppShell.Aside bg = 'coffee.3' p="md">
             <Stack align='center' justify='center' gap='xl'>
                 <Burger
                     opened={opened} 
@@ -47,7 +47,7 @@ export default function HomePage() {
                 <Link to ="/" className='link'>Activity Creation</Link>
                 <Link to ="/" className='link'>Summary</Link>
             </Stack>
-        </AppShell.Aside>
+        </AppShell.Aside> */}
 
         <AppShell.Main>
             <div style={{position: 'fixed', top: '70px', left: '80px'}}>
