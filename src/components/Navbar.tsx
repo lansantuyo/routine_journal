@@ -11,7 +11,7 @@ const Navbar = () => {
         <AppShell.Navbar p='md' style={{gap:'10px'}}>
            <NavLink
                 label="Homepage"
-                onClick={() => navigate('/Homepage')}
+                onClick={() => navigate('/')}
                 style={{ margin: '5px' }}
             />
             <NavLink
