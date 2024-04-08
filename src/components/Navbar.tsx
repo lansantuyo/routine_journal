@@ -29,10 +29,10 @@ const Navbar = () => {
                 onClick={() => navigate('/Detail')} 
                 style={{ margin: '5px' }}
             />
-            <NavLink onClick={() => navigate('/Homepage')} style={{ margin: '5px' }}>Homepage</NavLink>
+            {/* <NavLink onClick={() => navigate('/Homepage')} style={{ margin: '5px' }}>Homepage</NavLink>
             <NavLink onClick={() => navigate('/Activities')} style={{ margin: '5px' }}>Activities</NavLink>
             <NavLink onClick={() => navigate('/Journal')} style={{ margin: '5px' }}>Journal</NavLink>
-            <NavLink onClick={() => navigate('/Detail')} style={{ margin: '5px' }}>Activity Detail</NavLink>
+            <NavLink onClick={() => navigate('/Detail')} style={{ margin: '5px' }}>Activity Detail</NavLink> */}
         </AppShell.Navbar>
     );
 }
