@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppShell, Burger, Container, Space, Stack, TextInput, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import '../styles/JournalEntryPage.css';
+import TextEditor from "../components/TextEditor";
 
 export default function JournalEntryPage() {
     const [entry, setEntry] = useState('');
@@ -25,6 +26,7 @@ export default function JournalEntryPage() {
                 onChange={(event) => setEntry(event.target.value)}
                 className="journal-input"
             />
+            <TextEditor />
 
            {/* Button to submit journal entry */}
             <Button onClick={handleSubmit} className="journal-submit-button">Submit</Button>

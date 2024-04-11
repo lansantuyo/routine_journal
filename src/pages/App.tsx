@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import RouterSwitcher from "../components/RouterSwitcher";
 
 import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
 
 import {
   AppShell,
