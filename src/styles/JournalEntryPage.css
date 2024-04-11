@@ -1,0 +1,27 @@
+.journal-container {
+    text-align: center;
+}
+
+.journal-title {
+    font-family: 'Itim', sans-serif;
+    color: #543f3f;
+}
+
+.journal-input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.journal-submit-button {
+    margin-top: 10px;
+}
+
+.link{
+    color: #e3ddc5;
+    text-decoration: none;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 0px 1px 1px #000000;
+    text-align: center;
+}
