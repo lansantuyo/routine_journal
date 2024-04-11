@@ -1,23 +1,32 @@
-//Source: https://mantine.dev/app-shell/?e=CollapseDesktop&s=code
 import { useState } from 'react';
-import { AppShell, Burger, Container, Space, Group, Stack, Collapse, Select } from '@mantine/core';
+import {AppShell, Burger, Container, Space, Group, Stack, Collapse, Select, Grid} from '@mantine/core';
 import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
 import '../styles/HomePage.css';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
     const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
+    const navigate = useNavigate(); // Hook for navigation
+
+    const handleDateChange = (selectedDate: Date | null) => {
+        setValue(selectedDate);
+        // Navigate to TestJournalEntry with the selected date as a query parameter
+        if (selectedDate) {
+            const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
+            navigate(`/TestJournal?date=${formattedDate}`);
+        }
+    };
 
     return (
-        <div>
-            <div style={{position: 'fixed', top: '70px', left: '80px'}}>
+        <Grid>
+            <Grid.Col span={6}>
                 <DatePicker
                     allowDeselect={true}
                     value={value}
-                    onChange={setValue}
+                    onChange={handleDateChange}
                     hasNextLevel={false}
                     maxLevel="month"
                     size='xl'
@@ -47,11 +56,11 @@ export default function HomePage() {
                         },
                     }}
                 />
-            </div>
-            <div style={{position: 'fixed', top: '70px', left: '800px'}}>
+            </Grid.Col>
+            <Grid.Col span={6}>
                 <h2>Journal of</h2>
                 <h1>USERNAME :D</h1>
-            </div>
-        </div>
+            </Grid.Col>
+        </Grid>
     );
 }
