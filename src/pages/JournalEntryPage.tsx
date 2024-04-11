@@ -15,49 +15,19 @@ export default function JournalEntryPage() {
     };
 
     return (
-        <AppShell
-            layout="alt"
-            header={{ height: 60 }}
-            padding="md"
-        >
-            <AppShell.Main>
-                <Container size="lg" className="journal-container">
-                    <h1 className="journal-title">{currentDate} Journal Entry</h1>
-                    <Space h="lg" />
+        <Container size="lg" className="journal-container">
+            <h1 className="journal-title">{currentDate} Journal Entry</h1>
+            <Space h="lg" />
 
-                    <TextInput
-                        placeholder="Enter your journal entry here..."
-                        value={entry}
-                        onChange={(event) => setEntry(event.target.value)}
-                        className="journal-input"
-                    />
+            <TextInput
+                placeholder="Enter your journal entry here..."
+                value={entry}
+                onChange={(event) => setEntry(event.target.value)}
+                className="journal-input"
+            />
 
-                   {/* Button to submit journal entry */}
-                    <Button onClick={handleSubmit} className="journal-submit-button">Submit</Button>
-                </Container>
-            </AppShell.Main>
-
-            {/* Sidebar */}
-            <AppShell.Aside p="md">
-                <Stack align='center' justify='center' gap='xl'>
-                    <Burger
-                        opened={opened} 
-                        onClick={toggleDesktop} 
-                        visibleFrom="sm" 
-                        size="md" 
-                        color='white' 
-                        mt= '10' 
-                        ml='240'
-                        bg={'coffee.5'}
-                    />
-                    <Link to ="/" className='link'>Homepage</Link>
-                    <Link to ="/" className='link'>Journal Entry</Link>
-                    <Link to ="/" className='link'>Activity</Link>
-                    <Link to ="/" className='link'>Timer</Link>
-                    <Link to ="/" className='link'>Activity Creation</Link>
-                    <Link to ="/" className='link'>Summary</Link>
-                </Stack>
-            </AppShell.Aside>
-        </AppShell>
+           {/* Button to submit journal entry */}
+            <Button onClick={handleSubmit} className="journal-submit-button">Submit</Button>
+        </Container>
     );
 }
