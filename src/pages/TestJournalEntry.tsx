@@ -1,13 +1,73 @@
+import { useLocation } from 'react-router-dom'; // To access query parameters
 import TextEditor from "../components/TextEditor";
+import { useEffect, useState } from 'react';
+import { Grid, Select, Button, Group } from '@mantine/core';
 
-const content =
-    '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+function useQuery(): URLSearchParams {
+    return new URLSearchParams(useLocation().search);
+}
 
-export default function TestJournalEntry() {
+const TestJournalEntry: React.FC = () => {
+    let query = useQuery();
+    const [date, setDate] = useState<string>('');
+    const [content, setContent] = useState<string>('');
+    const [selectedActivities, setSelectedActivities] = useState<string[]>([]); // State to track selected activities
+
+    const handleContentChange = (newContent: string) => {
+        setContent(newContent);
+    };
+
+    useEffect(() => {
+        const dateParam = query.get('date');
+        if (dateParam) {
+            setDate(dateParam);
+            const savedContent = localStorage.getItem(dateParam);
+            if (savedContent) {
+                setContent(savedContent);
+            }
+        }
+    }, [query]);
+
+    useEffect(() => {
+        if (date) {
+            const timer = setTimeout(() => {
+                localStorage.setItem(date, content);
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [content, date]);
+
+    const handleActivitySelect = (activity: string | null, option?: { value: string, label: string }) => {
+        if (activity !== null && !selectedActivities.includes(activity)) {
+            setSelectedActivities(prevActivities => [...prevActivities, activity]);
+        }
+    };
+
 
     return (
-        <div>
-            <TextEditor />
-        </div>
+        <Grid>
+            <Grid.Col span={6}>
+                <h2>Journal Entry for {date}</h2>
+                <TextEditor initialContent={content} onContentChange={handleContentChange} />
+            </Grid.Col>
+            <Grid.Col span={6}>
+                <h2>Today I did...</h2>
+                <Select
+                    label="Choose activities"
+                    placeholder="Activity"
+                    data={['Activity1', 'Activity2', 'Activity3', 'Activity4']} // Data should ideally come from backend
+                    searchable
+                    onChange={handleActivitySelect}
+                />
+                <Group mt={10}>
+                    {selectedActivities.map(activity => (
+                        <Button key={activity}>{activity}</Button>
+                    ))}
+                </Group>
+            </Grid.Col>
+        </Grid>
     );
-}
+};
+
+export default TestJournalEntry;
