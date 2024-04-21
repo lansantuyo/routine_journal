@@ -1,0 +1,16 @@
+.timer-container {
+    text-align: center;
+}
+
+.timer-text {
+    font-family: 'Itim', sans-serif;
+    color: #543f3f;
+}
+
+.timer-number {
+    color: #543f3f;
+}
+
+.button-container {
+    margin-top: 20px;
+}

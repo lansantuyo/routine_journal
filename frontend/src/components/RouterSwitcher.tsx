@@ -6,7 +6,7 @@ import JournalEntryPage from '../pages/JournalEntryPage';
 import TestJournalEntry from '../pages/TestJournalEntry';
 import HomePage from '../pages/HomePage';
 import ActivityDetailPage from '../pages/ActivityDetailPage';
-
+import TimerPage from '../pages/TimerPage';
 const RouterSwitcher = () => {
     return (
         <Routes>
@@ -16,7 +16,8 @@ const RouterSwitcher = () => {
             <Route path="/TestJournal" element={<TestJournalEntry />} />
             <Route path="/Activities" element={<ButtonComponent />} />
             <Route path="/" element={<HomePage />} />
-            <Route path="/Detail" element={<ActivityDetailPage />} /> 
+            <Route path="/Detail" element={<ActivityDetailPage />} />
+            <Route path="/Timer" element={<TimerPage />} />
         </Routes>
     );
 };
