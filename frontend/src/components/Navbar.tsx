@@ -26,7 +26,12 @@ const Navbar = () => {
             />
             <NavLink
                 label="Activity Detail"
-                onClick={() => navigate('/Detail')} 
+                onClick={() => navigate('/Detail')}
+                style={{ margin: '5px' }}
+            />
+            <NavLink
+                label="Timer"
+                onClick={() => navigate('/Timer')}
                 style={{ margin: '5px' }}
             />
             <NavLink
