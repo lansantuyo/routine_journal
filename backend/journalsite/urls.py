@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from activity.views import ActivityView
+from activity.views import *
 from journal_entry.views import JournalView
 
 
@@ -28,4 +28,5 @@ router.register(r'journal', JournalView, 'journal')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    
 ]
