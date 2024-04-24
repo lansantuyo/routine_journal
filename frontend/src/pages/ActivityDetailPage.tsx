@@ -20,7 +20,8 @@ export default function ActivityDetailPage() {
             <Stack gap="md">
                 <Text style={{
                     'font-family': 'Inter',
-                    'font-size': '60px'
+                    'font-size': '60px',
+                    color: '#e3ddc5'
                 }}>Activity 1</Text>
                 <div style={{
                     display: 'flex',

@@ -78,15 +78,32 @@ export default function TimerPage() {
                 />
             </div>
             <div className="button-container">
-                <Button onClick={handleStart} disabled={isActive}>
-                    <FaPlay /> Start
-                </Button>
-                <Button onClick={handlePause} disabled={!isActive}>
-                    <FaPause /> Pause
-                </Button>
-                <Button onClick={handleReset}>
-                    <FaSync /> Restart
-                </Button>
+            <Button
+                onClick={handleStart}
+                disabled={isActive}
+                rightSection
+                className="button-class"
+            >
+                <FaPlay className="button-icon" />
+                <span className="button-text">Start</span>
+            </Button>
+            <Button
+                onClick={handlePause}
+                disabled={!isActive}
+                rightSection
+                className="button-class"
+            >
+                <FaPause className="button-icon" />
+                <span className="button-text">Pause</span>
+            </Button>
+            <Button
+                onClick={handleReset}
+                rightSection
+                className="button-class"
+            >
+                <FaSync className="button-icon" />
+                <span className="button-text">Restart</span>
+            </Button>
             </div>
             {showNotification && (
                 <Notification

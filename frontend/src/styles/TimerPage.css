@@ -10,3 +10,11 @@
 .button-container {
     margin-top: 20px;
 }
+
+.button-class:hover {
+    opacity: 0.8; 
+}
+
+.button-class .button-icon {
+    margin-right: 5px;
+}
