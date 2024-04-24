@@ -2,13 +2,9 @@
     text-align: center;
 }
 
-.timer-text {
-    font-family: 'Itim', sans-serif;
-    color: #543f3f;
-}
-
-.timer-number {
-    color: #543f3f;
+.timer-text, .timer-number {
+    font-family: 'Inter';
+    color: #E3DDC5;
 }
 
 .button-container {

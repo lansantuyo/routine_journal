@@ -33,7 +33,7 @@ class ActivityPage extends Component {
     
         return (
           <div>
-            <h1>Activities</h1>
+            <h1 style={{ 'font-family': 'Inter' }}>Activities</h1>
             {error ? (
               <p>{error}</p>
             ) : (
