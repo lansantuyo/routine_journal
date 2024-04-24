@@ -29,8 +29,8 @@ function App() {
           navbar = {{ width: 300, breakpoint: 'sm', collapsed: {mobile: !mobileOpened, desktop: !desktopOpened}}}
           padding = 'md'
           style = {{ 
-            backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
-            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+            backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#AE866C', 
+            color: computedColorScheme === 'dark' ? '#AE866C' : '#543F3F'
           }}
       >
         <Header 
