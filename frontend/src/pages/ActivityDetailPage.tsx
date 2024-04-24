@@ -27,15 +27,17 @@ export default function ActivityDetailPage() {
                     display: 'flex',
                     margin: '0 5px',
                     alignItems: 'center'
-                    }}>
+                    }}
+                >
                     <Description description={description} onDescriptionChange={handleDescriptionChange} />
                 </div>
                 <div style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
                     alignItems: 'center'
                     }}>
-                    <Graph />
+                    <div style={{ marginRight: '60px' }}>
+                        <Graph />    
+                    </div>
                     <Association />
                 </div>
             </Stack>
