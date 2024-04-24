@@ -11,8 +11,6 @@ class ActivityPage extends Component {
     super(props);    
     this.state = {data: [], error: null};
    }
- 
-   
 
     componentDidMount(): void {
         let data;
@@ -33,7 +31,7 @@ class ActivityPage extends Component {
     
         return (
           <div>
-            <h1 style={{ 'font-family': 'Inter' }}>Activities</h1>
+            <h1 style={{ fontFamily: 'Inter' }}>Activities</h1>
             {error ? (
               <p>{error}</p>
             ) : (
@@ -43,7 +41,18 @@ class ActivityPage extends Component {
                 ))}
               </ul>
             )}
-           <Link to="/AddActivity">Go to Add Item Page</Link> 
+            <Link 
+              to="/AddActivity" 
+              style={{ 
+                textDecoration: 'none', 
+                textTransform: 'uppercase', 
+                fontSize: '15px',
+                fontWeight: 'bold',
+                color: '#ead8c2', 
+              }}
+            >
+              Go to Add Activity Page
+            </Link> 
           </div>
           
         );
