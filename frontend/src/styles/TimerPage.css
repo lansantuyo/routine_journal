@@ -18,3 +18,21 @@
 .button-class .button-icon {
     margin-right: 5px;
 }
+
+.task-container {
+    margin-top: 20px;
+}
+
+.task-container input[type="text"] {
+    margin-right: 10px;
+}
+
+.task-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-container li {
+    margin-bottom: 8px;
+}

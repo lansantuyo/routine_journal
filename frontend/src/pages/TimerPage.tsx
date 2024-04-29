@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextInput, Notification } from '@mantine/core';
+import { Button, Notification } from '@mantine/core';
 import { FaPlay, FaPause, FaSync } from 'react-icons/fa';
 import '../styles/TimerPage.css';
 
@@ -9,6 +9,10 @@ export default function TimerPage() {
     const [intervalId, setIntervalId] = useState<number | undefined>(undefined);
     const [isActive, setIsActive] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [editedTime, setEditedTime] = useState<string>('');
+    const [taskDescription, setTaskDescription] = useState<string>('');
+    const [tasks, setTasks] = useState<{ id: number; description: string; completed: boolean }[]>([]);
 
     useEffect(() => {
         if (isActive) {
@@ -37,9 +41,9 @@ export default function TimerPage() {
     }, [isActive]);
 
     const formatTime = (time: number): string => {
-        const minutes = Math.floor(time / 60).toString().padStart(2, '0');
-        const seconds = (time % 60).toString().padStart(2, '0');
-        return `${minutes}:${seconds}`;
+        const minutes = Math.floor(time / 60);
+        const remainingSeconds = time % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
     const handleStart = () => {
@@ -57,60 +61,91 @@ export default function TimerPage() {
         setIntervalId(undefined);
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        const parsedValue = parseInt(value, 10);
-        setInitialTime(isNaN(parsedValue) ? 0 : parsedValue);
-        setSeconds(isNaN(parsedValue) ? 0 : parsedValue);
+    const handleEdit = () => {
+        setIsEditing(true);
+        setEditedTime(formatTime(initialTime));
+    };
+
+    const handleSaveEdit = () => {
+        setIsEditing(false);
+        const [minutesStr, secondsStr] = editedTime.split(':');
+        const minutes = parseInt(minutesStr, 10);
+        const seconds = parseInt(secondsStr, 10);
+        setInitialTime(isNaN(minutes) || isNaN(seconds) ? 0 : minutes * 60 + seconds);
+        setSeconds(isNaN(minutes) || isNaN(seconds) ? 0 : minutes * 60 + seconds);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        setEditedTime(formatTime(initialTime));
+    };
+
+    const handleTaskDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTaskDescription(e.target.value);
+    };
+
+    const addTask = () => {
+        if (taskDescription.trim() !== '') {
+            const newTask = { id: tasks.length + 1, description: taskDescription, completed: false };
+            setTasks(prevTasks => [...prevTasks, newTask]);
+            setTaskDescription('');
+        }
+    };
+
+    const toggleTaskCompletion = (taskId: number) => {
+        setTasks(prevTasks =>
+            prevTasks.map(task =>
+                task.id === taskId ? { ...task, completed: !task.completed } : task
+            )
+        );
     };
 
     return (
         <div className="timer-container">
-            <h1 className="timer-text">
-                Timer: <span className="timer-number">{formatTime(seconds)}</span>
+            <h1 className="timer-text" onClick={handleEdit} style={{ cursor: 'pointer' }}>
+                {isEditing ? <input value={editedTime} onChange={(e) => setEditedTime(e.target.value)} onBlur={handleSaveEdit} /> : <span>{formatTime(seconds)}</span>}
             </h1>
-            <div className="input-container">
-                <TextInput
-                    label="Set Timer (seconds)"
-                    type="number"
-                    value={initialTime.toString()}
-                    onChange={handleChange}
-                />
-            </div>
             <div className="button-container">
-            <Button
-                onClick={handleStart}
-                disabled={isActive}
-                rightSection
-                className="button-class"
-            >
-                <FaPlay className="button-icon" />
-                <span className="button-text">Start</span>
-            </Button>
-            <Button
-                onClick={handlePause}
-                disabled={!isActive}
-                rightSection
-                className="button-class"
-            >
-                <FaPause className="button-icon" />
-                <span className="button-text">Pause</span>
-            </Button>
-            <Button
-                onClick={handleReset}
-                rightSection
-                className="button-class"
-            >
-                <FaSync className="button-icon" />
-                <span className="button-text">Restart</span>
-            </Button>
+                <Button onClick={handleStart} disabled={isActive} variant="light">
+                    <FaPlay /> Start
+                </Button>
+                <Button onClick={handlePause} disabled={!isActive} variant="light">
+                    <FaPause /> Pause
+                </Button>
+                <Button onClick={handleReset} variant="light">
+                    <FaSync /> Restart
+                </Button>
             </div>
             {showNotification && (
                 <Notification
                     title="🤸BREAK TIME🤸"
                     onClose={() => setShowNotification(false)}
+                    color="teal"
                 />
             )}
+            <div className="task-container">
+                <input
+                    type="text"
+                    placeholder="Task to finish..."
+                    value={taskDescription}
+                    onChange={handleTaskDescriptionChange}
+                />
+                <Button onClick={addTask} variant="light">
+                    Add Task
+                </Button>
+                <ul>
+                    {tasks.map(task => (
+                        <li key={task.id}>
+                            <input
+                                type="checkbox"
+                                checked={task.completed}
+                                onChange={() => toggleTaskCompletion(task.id)}
+                            />
+                            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.description}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }
