@@ -106,15 +106,15 @@ export default function TimerPage() {
                 {isEditing ? <input value={editedTime} onChange={(e) => setEditedTime(e.target.value)} onBlur={handleSaveEdit} /> : <span>{formatTime(seconds)}</span>}
             </h1>
             <div className="button-container">
-                <Button onClick={handleStart} disabled={isActive} variant="light">
-                    <FaPlay /> Start
-                </Button>
-                <Button onClick={handlePause} disabled={!isActive} variant="light">
-                    <FaPause /> Pause
-                </Button>
-                <Button onClick={handleReset} variant="light">
-                    <FaSync /> Restart
-                </Button>
+            <Button onClick={handleStart} disabled={isActive} variant="light" color="#ead8c2" radius="lg">
+                <FaPlay /> Start
+            </Button>
+            <Button onClick={handlePause} disabled={!isActive} variant="light" color="#ead8c2" radius="lg">
+                <FaPause /> Pause
+            </Button>
+            <Button onClick={handleReset} variant="light" color="#ead8c2" radius="lg">
+                <FaSync /> Restart
+            </Button>
             </div>
             {showNotification && (
                 <Notification
@@ -130,7 +130,7 @@ export default function TimerPage() {
                     value={taskDescription}
                     onChange={handleTaskDescriptionChange}
                 />
-                <Button onClick={addTask} variant="light">
+                <Button onClick={addTask} variant="light" color="#ead8c2">
                     Add Task
                 </Button>
                 <ul>

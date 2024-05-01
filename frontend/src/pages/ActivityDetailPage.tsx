@@ -51,8 +51,8 @@ export default function ActivityDetailPage() {
                             <Description description={description} onDescriptionChange={handleDescriptionChange} />
                         )}
                         <Button
-                            variant="outline"
-                            color="blue"
+                            variant="light"
+                            color="#ead8c2"
                             style={{ marginTop: '20px' }}
                             onClick={handleAddDescription}
                         >
