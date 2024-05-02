@@ -33,7 +33,6 @@ export default function HomePage() {
                     monthLabelFormat="MMMM"
                     styles={{
                         day: {
-                            // color: '#543f3f',
                             backgroundColor: '#ead8c2',
                             borderRadius: '4%',
                             padding: '5px',
