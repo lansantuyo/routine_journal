@@ -43,9 +43,6 @@ function App() {
         <AppShell.Main>
           <RouterSwitcher />
         </AppShell.Main>
-        <AppShell.Footer>
-          Footer here
-        </AppShell.Footer>
       </AppShell>
   );
 }

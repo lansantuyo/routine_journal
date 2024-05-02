@@ -22,7 +22,7 @@ function Description({ description, onDescriptionChange }: DescriptionProps) {
 
     const handleTextClick = () => {
         // Clear the text box when clicked on
-        if (!editing && description === "add a description") {
+        if (!editing && description === "click to add a description") {
             setEditedDescription("");
         }
         setEditing(true);
