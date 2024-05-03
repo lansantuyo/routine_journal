@@ -6,4 +6,4 @@ class ActivityAdmin(admin.ModelAdmin):
     model = Activity
 
 
-admin.site.register(Activity, ActivityAdmin)
+# admin.site.register(Activity, ActivityAdmin)

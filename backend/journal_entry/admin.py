@@ -6,4 +6,4 @@ class JournalAdmin(admin.ModelAdmin):
     model = Journal
 
 
-admin.site.register(Journal, JournalAdmin)
+# admin.site.register(Journal, JournalAdmin)
