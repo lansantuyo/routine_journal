@@ -10,7 +10,7 @@ router.register(r'activity_types', ActivityTypeViewSet, basename='activity_types
 router.register(r'metric_types', MetricTypeViewSet, basename='metric_types')
 router.register(r'activities', ActivityViewSet, basename='activities')
 router.register(r'metrics', MetricViewSet, basename='metrics')
-router.register(r'users', UserViewSet, basename='users')
+router.register(r'user', UserViewSet, basename='users')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
