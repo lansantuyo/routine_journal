@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import '../styles/HomePage.css';
 import { useNavigate } from 'react-router-dom';
 
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+
 export default function HomePage() {
     const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
@@ -20,7 +23,7 @@ export default function HomePage() {
         }
     };
 
-    return (
+    return (        
         <Grid>
             <Grid.Col span={6}>
                 <DatePicker
@@ -54,6 +57,7 @@ export default function HomePage() {
                             width: '400px',
                             transform: 'translateX(32%)',
                         },
+
                     }}
                 />
             </Grid.Col>
