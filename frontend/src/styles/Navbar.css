@@ -1,0 +1,18 @@
+.nav-container {
+    font-family: 'Inter';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999; 
+}
+.nav-items {
+    margin: 5px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background-color: transparent;
+}
+.nav-items:hover {
+    font-weight: bold;
+    background-color: transparent;
+}

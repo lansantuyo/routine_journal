@@ -1,48 +1,86 @@
 import {
     AppShell,
-    NavLink
+    NavLink,
+    useMantineColorScheme,
+    useComputedColorScheme,
 } from '@mantine/core';
 import {useNavigate} from "react-router-dom";
+import '../styles/Navbar.css'
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const {setColorScheme} = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     return (
-        <AppShell.Navbar p='md' style={{gap:'10px'}}>
+        <AppShell.Navbar 
+            p='md' 
+            style={{
+                gap:'10px',
+                backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                borderRight: 'none',
+            }}
+            className='nav-container'>
            <NavLink
                 label="Homepage"
                 onClick={() => navigate('/')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                    fontSize: '40px'
+                }}
             />
             <NavLink
                 label="Activities"
                 onClick={() => navigate('/Activities')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                }}
             />
             <NavLink
                 label="Journal"
                 onClick={() => navigate('/Journal')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                }}
             />
             <NavLink
                 label="Activity Detail"
                 onClick={() => navigate('/Detail')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                }}
             />
             <NavLink
                 label="Timer"
                 onClick={() => navigate('/Timer')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                }}
             />
             <NavLink
                 label="Test journal for dev"
                 onClick={() => navigate('/TestJournal')}
-                style={{ margin: '5px' }}
+                className='nav-items'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                }}
             />
-            {/* <NavLink onClick={() => navigate('/Homepage')} style={{ margin: '5px' }}>Homepage</NavLink>
-            <NavLink onClick={() => navigate('/Activities')} style={{ margin: '5px' }}>Activities</NavLink>
-            <NavLink onClick={() => navigate('/Journal')} style={{ margin: '5px' }}>Journal</NavLink>
-            <NavLink onClick={() => navigate('/Detail')} style={{ margin: '5px' }}>Activity Detail</NavLink> */}
         </AppShell.Navbar>
     );
 }
