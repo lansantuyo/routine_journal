@@ -3,10 +3,10 @@ import {AppShell, Burger, Container, Space, Group, Stack, Collapse, Select, Grid
 import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
-import '../styles/HomePage.css';
+import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function HomePage() {
+export default function Calendar() {
     const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
     const navigate = useNavigate(); // Hook for navigation
