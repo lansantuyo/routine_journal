@@ -1,10 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import NotFound from './NotFound';
-import TextComponent from './Text';
-import ButtonComponent from './Button';
 import JournalEntryPage from '../pages/JournalEntryPage';
 import TestJournalEntry from '../pages/TestJournalEntry';
-import HomePage from '../pages/HomePage';
+import Calendar from '../pages/Calendar';
 import ActivityDetailPage from '../pages/ActivityDetailPage';
 import TimerPage from '../pages/TimerPage';
 import ActivityPage from '../pages/ActivityPage';
@@ -17,7 +15,7 @@ const RouterSwitcher = () => {
             <Route path="/Journal" element={<JournalEntryPage />} />
             <Route path="/TestJournal" element={<TestJournalEntry />} />
             <Route path="/Activities" element={<ActivityPage />} />
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Calendar />} />
             <Route path="/Detail" element={<ActivityDetailPage />} />
             <Route path="/Timer" element={<TimerPage />} />
             <Route path="/AddActivity" element = {<AddActivityForm />} />
