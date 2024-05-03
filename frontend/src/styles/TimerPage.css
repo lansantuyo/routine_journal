@@ -2,15 +2,37 @@
     text-align: center;
 }
 
-.timer-text {
-    font-family: 'Itim', sans-serif;
-    color: #543f3f;
-}
-
-.timer-number {
-    color: #543f3f;
+.timer-text, .timer-number {
+    font-family: 'Inter';
+    color: #E3DDC5;
 }
 
 .button-container {
     margin-top: 20px;
+}
+
+.button-class:hover {
+    opacity: 0.8; 
+}
+
+.button-class .button-icon {
+    margin-right: 5px;
+}
+
+.task-container {
+    margin-top: 20px;
+}
+
+.task-container input[type="text"] {
+    margin-right: 10px;
+}
+
+.task-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-container li {
+    margin-bottom: 8px;
 }

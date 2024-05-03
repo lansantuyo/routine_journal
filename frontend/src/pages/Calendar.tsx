@@ -5,6 +5,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 export default function Calendar() {
     const [value, setValue] = useState<Date | null>(null);
@@ -33,7 +35,6 @@ export default function Calendar() {
                     monthLabelFormat="MMMM"
                     styles={{
                         day: {
-                            // color: '#543f3f',
                             backgroundColor: '#ead8c2',
                             borderRadius: '4%',
                             padding: '5px',

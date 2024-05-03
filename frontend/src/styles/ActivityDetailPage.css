@@ -1,0 +1,10 @@
+.description-container-dark {
+    background-color: #5D4037;
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.description-container-dark:hover {
+    border-color: #007bff;
+}
