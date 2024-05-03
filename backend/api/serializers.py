@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import *
+from .models import JournalEntry, ActivityType, MetricType, Activity, Metric
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,32 +12,35 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
-class JournalEntrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JournalEntry
-        fields = ['id', 'title', 'date', 'content', 'created_date', 'author', 'activities']
-        extra_kwargs = {"author": {"read_only": True}}
-
-class ActivityTypeSerializer(serializers.ModelSerializer):
-    metric_types = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
-    class Meta:
-        model = ActivityType
-        fields = ['id', 'name', 'description', 'metric_types']
-
 class MetricTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MetricType
         fields = ['id', 'activity_type', 'name', 'description']
 
+class MetricSerializer(serializers.ModelSerializer):
+    metric_type = MetricTypeSerializer(read_only=True)
+
+    class Meta:
+        model = Metric
+        fields = ['id', 'activity', 'metric_type', 'value']
+
+class ActivityTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActivityType
+        fields = ['id', 'name', 'description']
+
 class ActivitySerializer(serializers.ModelSerializer):
-    metrics = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    metrics = MetricSerializer(many=True, read_only=True)
+    activity_type = ActivityTypeSerializer(read_only=True)
 
     class Meta:
         model = Activity
         fields = ['id', 'journal_entry', 'activity_type', 'description', 'metrics']
 
-class MetricSerializer(serializers.ModelSerializer):
+class JournalEntrySerializer(serializers.ModelSerializer):
+    activities = ActivitySerializer(many=True, read_only=True)
+
     class Meta:
-        model = Metric
-        fields = ['id', 'activity', 'metric_type', 'value']
+        model: JournalEntry
+        fields = ['id', 'title', 'date', 'content', 'created_date', 'author', 'activities']
+        extra_kwargs = {"author": {"read_only": True}}

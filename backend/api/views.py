@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils.dateparse import parse_date
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import JournalEntry, ActivityType, MetricType, Activity, Metric
 from .serializers import JournalEntrySerializer, ActivityTypeSerializer, MetricTypeSerializer, ActivitySerializer, \
@@ -27,8 +28,20 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Filter journal entries to only those owned by the current user
-        return JournalEntry.objects.filter(author=self.request.user)
+        queryset = JournalEntry.objects.all()
+        user = self.request.user  # Get the current user
+
+        date = self.request.query_params.get('date', None)
+        if date:
+            date_obj = parse_date(date)
+            if date_obj:
+                queryset = queryset.filter(date=date_obj)
+
+        # Filter by the author (current user)
+        if not self.request.user.is_anonymous:
+            queryset = queryset.filter(author=user)
+
+        return queryset
 
     def perform_create(self, serializer):
         # Automatically set the author to the currently authenticated user when creating a new journal entry
