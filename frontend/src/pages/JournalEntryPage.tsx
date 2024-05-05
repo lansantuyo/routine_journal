@@ -63,20 +63,44 @@ const JournalEntryPage: React.FC = () => {
     const fetchJournalEntry = async (date: string) => {
         try {
             const response = await api.get(`/api/journal_entries/by-date/?date=${date}`);
-            console.log("Fetch response:", response);
             if (response.data.length > 0) {
                 const entry = response.data[0];
                 setContent(entry.content);
                 setEntryId(entry.id);
-                setActivities(entry.activities || []);
+                const loadedActivities = await loadActivitiesWithMetrics(entry.activities || []);
+                setActivities(loadedActivities);
             } else {
                 setContent('');
                 setEntryId(null);
+                setActivities([]);
             }
         } catch (error) {
             console.error("Failed to fetch journal entry", error);
         }
     };
+
+    const fetchMetrics = async (activityId: number) => {
+        try {
+            const response = await api.get(`/api/activities/${activityId}/metrics/`);
+            console.log("Metrics fetch result:", response.data);
+            return response.data; // This returns the list of metrics for the activity
+        } catch (err) {
+            console.error("Failed to fetch metrics", err);
+            return []; // Return an empty array in case of error
+        }
+    };
+
+    const loadActivitiesWithMetrics = async (activities: Activity[]) => {
+        return Promise.all(activities.map(async (activity) => {
+            const metrics = await fetchMetrics(activity.id);
+            return { ...activity, metrics };
+        }));
+    };
+
+    // const updateActivitiesWithMetrics = async () => {
+    //     const updatedActivities = await Promise.all(activities.map(activity => loadActivitiesWithMetrics(activity)));
+    //     setActivities(updatedActivities);
+    // };
 
 
     const fetchActivityTypes = () => {
@@ -169,9 +193,15 @@ const JournalEntryPage: React.FC = () => {
                         <Accordion.Item key={activity.id} value={`activity_${index}`}>
                             <Accordion.Control>{activity.activity_type.name}</Accordion.Control>
                             <Accordion.Panel>
-                                {/* Display information about the activity */}
-                                Description: {activity.activity_type.description || "No description"}
-                                {/* You could also list metrics here if needed */}
+                                <div>Description: {activity.activity_type.description || "No description"}</div>
+                                <div>
+                                    Metrics:
+                                    <ul>
+                                        {activity.metrics?.map(metric => (
+                                            <li key={metric.id}>{metric.metric_type.name}: {metric.value}</li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </Accordion.Panel>
                         </Accordion.Item>
                     ))}

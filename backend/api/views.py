@@ -130,6 +130,18 @@ class ActivityViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['get'], url_path='metrics')
+    def get_metrics(self, request, pk=None):
+        """
+        This custom action fetches all metrics associated with a specific activity.
+        """
+        activity = self.get_object()  # DRF helper to get the activity instance
+        metrics = Metric.objects.filter(activity=activity)  # Get all metrics related to the activity
+
+        # Serialize the data
+        serializer = MetricSerializer(metrics, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class MetricViewSet(viewsets.ModelViewSet):
     serializer_class = MetricSerializer
