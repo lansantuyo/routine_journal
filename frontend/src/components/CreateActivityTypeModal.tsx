@@ -1,11 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import { Modal, TextInput, Textarea, Button, Group, Autocomplete } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import React, { useEffect, useState } from 'react';
 import api from "../api";
 
 interface CreateActivityTypeModalProps {
     opened: boolean;
     onClose: () => void;
+    initialActivityName?: string;
 }
 
 interface FormValues {
@@ -19,9 +20,14 @@ interface CategoryOption {
     label: string;
 }
 
-const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opened, onClose }) => {
+interface MetricType {
+    name: string;
+    description: string;
+}
+
+const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opened, onClose, initialActivityName }) => {
     const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
-    const [lastUpdated, setLastUpdated] = useState(Date.now());
+    const [metricTypes, setMetricTypes] = useState<MetricType[]>([]);
 
     const form = useForm<FormValues>({
         initialValues: {
@@ -46,7 +52,18 @@ const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opene
         };
 
         fetchCategories();
-    }, [lastUpdated]);
+    }, []);
+
+    // Update form values when initialActivityName changes
+    useEffect(() => {
+        if (initialActivityName) {
+            form.setValues({
+                name: initialActivityName,
+                description: form.values.description,
+                category: form.values.category,
+            });
+        }
+    }, [initialActivityName, form]);
 
     const handleSubmit = async (values: FormValues) => {
         try {
@@ -54,27 +71,58 @@ const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opene
             const existingCategory = categoryOptions.find(option => option.label === values.category);
 
             if (existingCategory) {
-                categoryId = existingCategory.value; // Use existing category ID
+                categoryId = existingCategory.value;
             } else {
-                // Category does not exist, create a new one
                 const newCategoryResponse = await api.post('/api/categories/', { name: values.category });
-                categoryId = newCategoryResponse.data.id; // Assuming the new category ID is returned
-                setLastUpdated(Date.now()); // Trigger re-fetch of categories
+                categoryId = newCategoryResponse.data.id;
+
+                const newCategory = {
+                    value: categoryId,
+                    label: values.category
+                };
+                setCategoryOptions(currentCategories => [...currentCategories, newCategory]);
             }
 
-            // Submit the main form data with the categoryId
-            const response = await api.post('/api/activity_types/', {
+            const activityTypeResponse = await api.post('/api/activity_types/', {
                 name: values.name,
                 description: values.description,
                 category: categoryId,
             });
 
-            console.log('Activity Type Created:', response.data); // Ensure `response` is used within this block
-            form.reset(); // Reset form fields after submission
-            onClose(); // Close modal on successful submission
+            metricTypes.forEach(async (metric) => {
+                await api.post('/api/metric_types/', {
+                    name: metric.name,
+                    description: metric.description,
+                    activity_type: activityTypeResponse.data.id
+                });
+            });
+
+            console.log('Activity Type Created:', activityTypeResponse.data);
+            form.reset();
+            setMetricTypes([]);
+            onClose();
         } catch (error) {
             console.error('Failed to create activity type or category', error);
         }
+    };
+
+
+    const handleAddMetricType = () => {
+        setMetricTypes([...metricTypes, { name: '', description: '' }]);
+    };
+
+    const handleMetricChange = (index: number, field: keyof MetricType, value: string) => {
+        const updatedMetrics = metricTypes.map((metric, idx) => {
+            if (idx === index) {
+                return { ...metric, [field]: value };
+            }
+            return metric;
+        });
+        setMetricTypes(updatedMetrics);
+    };
+
+    const handleRemoveMetricType = (index: number) => {
+        setMetricTypes(metricTypes.filter((_, idx) => idx !== index));
     };
 
 
@@ -93,22 +141,43 @@ const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opene
                     required
                 />
                 <Autocomplete
-                label="Category"
-                placeholder="Type or select a category"
-                data={categoryOptions.map(option => option.label)} // Map to just strings for display
-                value={form.values.category}
-                onChange={(value) => form.setFieldValue('category', value)}
+                    label="Category"
+                    placeholder="Type or select a category"
+                    data={categoryOptions.map(option => option.label)}
+                    value={form.values.category}
+                    onChange={(value) => form.setFieldValue('category', value)}
                 />
                 <Textarea
                     label="Description"
                     placeholder="Description (optional)"
                     {...form.getInputProps('description')}
                 />
+                <Button onClick={handleAddMetricType} variant="outline" style={{ marginTop: 10 }}>
+                    + Add Metric Type
+                </Button>
+                {metricTypes.map((metric, index) => (
+                    <Group key={index} mt="md">
+                        <TextInput
+                            label="Metric Name"
+                            placeholder="Name of the metric type"
+                            value={metric.name}
+                            onChange={(event) => handleMetricChange(index, 'name', event.target.value)}
+                        />
+                        <Textarea
+                            label="Metric Description"
+                            placeholder="Description of the metric type"
+                            value={metric.description}
+                            onChange={(event) => handleMetricChange(index, 'description', event.target.value)}
+                        />
+                        <Button onClick={() => handleRemoveMetricType(index)} color="red">Remove</Button>
+                    </Group>
+                ))}
                 <Group mt="md">
                     <Button type="submit">Create</Button>
                 </Group>
             </form>
         </Modal>
+
     );
 };
 
