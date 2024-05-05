@@ -41,12 +41,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
 # Activity Type Serializer
 class ActivityTypeSerializer(serializers.ModelSerializer):
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), allow_null=True)
+    metric_types = MetricTypeSerializer(many=True, read_only=True)  # Add this line
 
     class Meta:
         model = ActivityType
-        fields = ['id', 'name', 'description', 'category']
+        fields = ['id', 'name', 'description', 'category', 'metric_types']  # Include 'metric_types' here
         extra_kwargs = {"author": {"read_only": True}}
+
 
 
 # Activity Serializer

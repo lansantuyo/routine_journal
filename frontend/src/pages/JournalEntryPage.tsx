@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import TextEditor from "../components/TextEditor";
-import {Grid, Button, Autocomplete, Drawer, Accordion} from '@mantine/core';
+import {Grid, Button, Autocomplete, Drawer, Accordion, TextInput} from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import api from "../api";
 import CreateActivityTypeModal from "../components/CreateActivityTypeModal";
@@ -162,6 +162,55 @@ const JournalEntryPage: React.FC = () => {
         }]);
     };
 
+    const handleMetricChange = async (
+        activityId: number,
+        metricTypeId: number,
+        value: string,
+        metricId?: number | null   // metricId can be optional and undefined initially for new metrics
+    ) => {
+        // Prepare the API URL and method based on the existence of metricId
+        const apiUrl = metricId ? `/api/metrics/${metricId}/` : '/api/metrics/';
+        const method = metricId ? 'put' : 'post';
+
+        // Prepare the data object for the request
+        const metricData = {
+            activity: activityId,
+            metric_type: metricTypeId,
+            value: value
+        };
+
+        try {
+            // Execute the API call
+            const response = await api[method](apiUrl, metricData);
+            console.log('Metric saved:', response.data);
+
+            // Update the activities state to reflect the new or updated metric
+            setActivities(prevActivities => prevActivities.map(activity => {
+                if (activity.id === activityId) {
+                    const metricsUpdated = activity.metrics ? [...activity.metrics] : [];
+                    const metricIndex = metricsUpdated.findIndex(m => m.id === metricId);
+
+                    if (metricIndex > -1) {
+                        // Update existing metric
+                        metricsUpdated[metricIndex] = { ...metricsUpdated[metricIndex], value: value };
+                    } else {
+                        // Add new metric with returned ID from the server
+                        metricsUpdated.push({ ...metricData, id: response.data.id, metric_type: { id: metricTypeId, name: "", description: "" } });
+                    }
+
+                    // Return updated activity
+                    return { ...activity, metrics: metricsUpdated };
+                }
+                return activity;
+            }));
+        } catch ( error) {
+            console.error('Error saving metric:', error);
+            // Handle error, potentially show an error message to the user
+        }
+    };
+
+
+
 
     return (
         <Grid>
@@ -192,17 +241,54 @@ const JournalEntryPage: React.FC = () => {
                     {activities.map((activity, index) => (
                         <Accordion.Item key={activity.id} value={`activity_${index}`}>
                             <Accordion.Control>{activity.activity_type.name}</Accordion.Control>
+                            {/*<Accordion.Panel>*/}
+                            {/*    <div>Description: {activity.activity_type.description || "No description"}</div>*/}
+                            {/*    <div>*/}
+                            {/*        Metrics:*/}
+                            {/*        {activity.activity_type.metric_types?.map(metricType => {*/}
+                            {/*            const existingMetric = activity.metrics?.find(m => m.metric_type.id === metricType.id);*/}
+                            {/*            return (*/}
+                            {/*                <TextInput*/}
+                            {/*                    key={metricType.id}*/}
+                            {/*                    label={metricType.name}*/}
+                            {/*                    description={metricType.description}*/}
+                            {/*                    value={existingMetric ? existingMetric.value : ''}*/}
+                            {/*                    // onChange={(event) => handleMetricChange(*/}
+                            {/*                    //     activity.id,*/}
+                            {/*                    //     metricType.id,*/}
+                            {/*                    //     event.currentTarget.value,*/}
+                            {/*                    //     existingMetric ? existingMetric.id : null*/}
+                            {/*                    // )}*/}
+                            {/*                />*/}
+                            {/*            );*/}
+                            {/*        })}*/}
+                            {/*    </div>*/}
+                            {/*</Accordion.Panel>*/}
                             <Accordion.Panel>
                                 <div>Description: {activity.activity_type.description || "No description"}</div>
                                 <div>
                                     Metrics:
-                                    <ul>
-                                        {activity.metrics?.map(metric => (
-                                            <li key={metric.id}>{metric.metric_type.name}: {metric.value}</li>
-                                        ))}
-                                    </ul>
+                                    {activity.activity_type.metric_types?.map(metricType => {
+                                        const existingMetric = activity.metrics?.find(m => m.metric_type.id === metricType.id);
+                                        return (
+                                            <TextInput
+                                                key={metricType.id}
+                                                label={metricType.name}
+                                                description={metricType.description}
+                                                value={existingMetric ? existingMetric.value : ''}
+                                                onChange={(event) => handleMetricChange(
+                                                    activity.id,
+                                                    metricType.id,
+                                                    event.currentTarget.value,
+                                                    existingMetric ? existingMetric.id : null
+                                                )}
+                                            />
+                                        );
+                                    })}
                                 </div>
                             </Accordion.Panel>
+
+
                         </Accordion.Item>
                     ))}
                 </Accordion>
