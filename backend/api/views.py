@@ -4,9 +4,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils.dateparse import parse_date
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import JournalEntry, ActivityType, MetricType, Activity, Metric
+from .models import JournalEntry, ActivityType, MetricType, Activity, Metric, Category
 from .serializers import JournalEntrySerializer, ActivityTypeSerializer, MetricTypeSerializer, ActivitySerializer, \
-    MetricSerializer, UserSerializer
+    MetricSerializer, UserSerializer, CategorySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -48,13 +48,26 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
 class ActivityTypeViewSet(viewsets.ModelViewSet):
     serializer_class = ActivityTypeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         # Access all activity types if needed for user to create Activities
-        return ActivityType.objects.all()
+        return ActivityType.objects.filter(author=self.request.user)
+
+    def perform_create(self, serializer):
+        # Automatically set the author to the currently authenticated user when creating a new journal entry
+        serializer.save(author=self.request.user)
 
 
 class MetricTypeViewSet(viewsets.ModelViewSet):

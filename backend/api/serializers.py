@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import JournalEntry, ActivityType, MetricType, Activity, Metric
+from .models import JournalEntry, ActivityType, MetricType, Activity, Metric, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,10 +28,19 @@ class MetricSerializer(serializers.ModelSerializer):
         fields = ['id', 'activity', 'metric_type', 'value']
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'author']
+
+
 class ActivityTypeSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), allow_null=True)
+
     class Meta:
         model = ActivityType
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'category', 'author']
+        extra_kwargs = {"author": {"read_only": True}}
 
 
 class ActivitySerializer(serializers.ModelSerializer):
