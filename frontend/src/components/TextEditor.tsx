@@ -1,9 +1,9 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import {Link, RichTextEditor} from "@mantine/tiptap";
+import { Link, RichTextEditor } from "@mantine/tiptap";
 import Superscript from "@tiptap/extension-superscript";
-import SubScript from "@tiptap/extension-subscript";
+import Subscript from "@tiptap/extension-subscript";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ export default function TextEditor({ initialContent, onContentChange }: TextEdit
             Underline,
             Link,
             Superscript,
-            SubScript,
+            Subscript,
             Highlight,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
@@ -29,6 +29,13 @@ export default function TextEditor({ initialContent, onContentChange }: TextEdit
             onContentChange(editor.getHTML());
         },
     });
+
+    // Effect to update the editor's content when initialContent changes
+    useEffect(() => {
+        if (editor && initialContent !== editor.getHTML()) {
+            editor.commands.setContent(initialContent);
+        }
+    }, [initialContent, editor]);
 
     useEffect(() => {
         return () => editor?.destroy();

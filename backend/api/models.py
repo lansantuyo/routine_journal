@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class JournalEntry(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(blank=True, null=True, max_length=100)
     date = models.DateField()
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)

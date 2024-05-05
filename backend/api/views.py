@@ -23,25 +23,25 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = JournalEntry.objects.all()
-        user = self.request.user  # Get the current user
+        return JournalEntry.objects.filter(author=self.request.user)
 
-        date = self.request.query_params.get('date', None)
+    @action(detail=False, methods=['get'], url_path='by-date')
+    def get_by_date(self, request):
+        date = request.query_params.get('date', None)
         if date:
             date_obj = parse_date(date)
             if date_obj:
-                queryset = queryset.filter(date=date_obj)
-
-        # Filter by the author (current user)
-        if not self.request.user.is_anonymous:
-            queryset = queryset.filter(author=user)
-
-        return queryset
+                entries = self.get_queryset().filter(date=date_obj)
+                serializer = self.get_serializer(entries, many=True)
+                return Response(serializer.data)
+            return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Date parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
         # Automatically set the author to the currently authenticated user when creating a new journal entry
