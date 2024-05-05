@@ -6,6 +6,7 @@ import api from "../api";
 interface CreateActivityTypeModalProps {
     opened: boolean;
     onClose: () => void;
+    onAddActivityType: (newActivityType: ActivityType) => void;
     initialActivityName?: string;
 }
 
@@ -25,7 +26,13 @@ interface MetricType {
     description: string;
 }
 
-const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opened, onClose, initialActivityName }) => {
+interface ActivityType {
+    id: number;
+    name: string;
+    description?: string;
+}
+
+const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opened, onClose, onAddActivityType, initialActivityName }) => {
     const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
     const [metricTypes, setMetricTypes] = useState<MetricType[]>([]);
 
@@ -68,19 +75,25 @@ const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opene
     const handleSubmit = async (values: FormValues) => {
         try {
             let categoryId = null;
-            const existingCategory = categoryOptions.find(option => option.label === values.category);
+            const trimmedCategory = values.category.trim();
 
-            if (existingCategory) {
-                categoryId = existingCategory.value;
-            } else {
-                const newCategoryResponse = await api.post('/api/categories/', { name: values.category });
-                categoryId = newCategoryResponse.data.id;
+            // Check if there's a non-empty category provided
+            if (trimmedCategory) {
+                const existingCategory = categoryOptions.find(option => option.label === trimmedCategory);
 
-                const newCategory = {
-                    value: categoryId,
-                    label: values.category
-                };
-                setCategoryOptions(currentCategories => [...currentCategories, newCategory]);
+                if (existingCategory) {
+                    categoryId = existingCategory.value;
+                } else {
+                    // Only create a new category if the name is not empty
+                    const newCategoryResponse = await api.post('/api/categories/', { name: trimmedCategory });
+                    categoryId = newCategoryResponse.data.id;
+
+                    const newCategory = {
+                        value: categoryId,
+                        label: trimmedCategory
+                    };
+                    setCategoryOptions(currentCategories => [...currentCategories, newCategory]);
+                }
             }
 
             const activityTypeResponse = await api.post('/api/activity_types/', {
@@ -88,16 +101,18 @@ const CreateActivityTypeModal: React.FC<CreateActivityTypeModalProps> = ({ opene
                 description: values.description,
                 category: categoryId,
             });
+            if (activityTypeResponse.status === 200 || activityTypeResponse.status === 201) {
+                console.log('Activity Type Created:', activityTypeResponse.data);
+                onAddActivityType(activityTypeResponse.data); // Use the callback to update the parent's state
+            }
 
-            metricTypes.forEach(async (metric) => {
+            for (const metric of metricTypes) {
                 await api.post('/api/metric_types/', {
                     name: metric.name,
                     description: metric.description,
                     activity_type: activityTypeResponse.data.id
                 });
-            });
-
-            console.log('Activity Type Created:', activityTypeResponse.data);
+            }
             form.reset();
             setMetricTypes([]);
             onClose();
