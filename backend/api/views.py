@@ -154,7 +154,9 @@ class MetricViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # Ensure this call is correct and data is complete
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
+            print(serializer.errors)  # Log or print the errors
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

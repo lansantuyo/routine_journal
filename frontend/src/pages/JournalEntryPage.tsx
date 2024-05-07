@@ -175,7 +175,7 @@ const JournalEntryPage: React.FC = () => {
         // Prepare the data object for the request
         const metricData = {
             activity: activityId,
-            metric_type: metricTypeId,
+            metric_type_id: metricTypeId,
             value: value
         };
 

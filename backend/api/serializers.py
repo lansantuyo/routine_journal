@@ -24,11 +24,18 @@ class MetricTypeSerializer(serializers.ModelSerializer):
 
 # Metric Serializer
 class MetricSerializer(serializers.ModelSerializer):
-    metric_type = MetricTypeSerializer(read_only=True)
+    metric_type_id = serializers.PrimaryKeyRelatedField(
+        queryset=MetricType.objects.all(), source='metric_type', write_only=True
+    )
 
     class Meta:
         model = Metric
-        fields = ['id', 'activity', 'metric_type', 'value']
+        fields = ['id', 'activity', 'metric_type_id', 'value']  # Use 'metric_type_id' to handle foreign key
+
+    def to_representation(self, instance):
+        self.fields['metric_type'] = MetricTypeSerializer(read_only=True)
+        return super(MetricSerializer, self).to_representation(instance)
+
 
 
 # Category Serializer
