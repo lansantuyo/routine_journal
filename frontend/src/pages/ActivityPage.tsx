@@ -1,59 +1,51 @@
-import axios from "axios";
-import { Component, ReactNode } from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import api from '../api'; // Import your API utility that configures axios
+import { Card, Text, Grid, Button } from '@mantine/core';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-
-class ActivityPage extends Component {
-   constructor (props:any) {
-    super(props);    
-    this.state = {data: [], error: null};
-   }
-
-    componentDidMount(): void {
-        let data;
-        axios.get('http://localhost:8000/api/activity/')
-        .then(res => {
-            this.setState({
-                data : res.data
-            })
-        })
-        .catch(error => { 
-            this.setState({ error: 'Error fetching data' });
-            console.error('Error fetching data:', error);
-        })
-    }
-
-    render() {
-        const { data, error } = this.state;
-    
-        return (
-          <div>
-            <h1 style={{ fontFamily: 'Inter' }}>Activities</h1>
-            {error ? (
-              <p>{error}</p>
-            ) : (
-              <ul>
-                {data.map(output => (
-                  <li key={output}>{output.activity_name}</li> 
-                ))}
-              </ul>
-            )}
-            <Link 
-              to="/AddActivity" 
-              style={{ 
-                textDecoration: 'none', 
-                textTransform: 'uppercase', 
-                fontSize: '15px',
-                fontWeight: 'bold',
-                color: '#ead8c2', 
-              }}
-            >
-              Go to Add Activity Page
-            </Link> 
-          </div>
-          
-        );
+// Define an interface for ActivityType if not already defined
+interface ActivityType {
+    id: number;
+    name: string;
+    description?: string;
 }
 
-}
-export default ActivityPage;
+const ActivityTypesPage: React.FC = () => {
+    const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
+    const navigate = useNavigate(); // Initialize the navigate function
+
+    useEffect(() => {
+        fetchActivityTypes();
+    }, []);
+
+    const fetchActivityTypes = async () => {
+        try {
+            const response = await api.get('/api/activity_types/'); // Adjust the endpoint as necessary
+            setActivityTypes(response.data);
+        } catch (error) {
+            console.error("Failed to fetch activity types", error);
+        }
+    };
+
+    // Function to handle navigation
+    const handleNavigate = (id: number) => {
+        navigate(`/Activities/${id}`); // Navigate to the Activity details page
+    };
+
+    return (
+        <Grid>
+            {activityTypes.map((activityType) => (
+                <Grid.Col key={activityType.id} span={4}>
+                    <Card shadow="sm" padding="lg">
+                        <Text>{activityType.name}</Text>
+                        <Text size="sm">{activityType.description || "No description provided."}</Text>
+                        {/* Button to navigate to activity detail page */}
+                        <Button onClick={() => handleNavigate(activityType.id)}>View Details</Button>
+                    </Card>
+                </Grid.Col>
+            ))}
+        </Grid>
+    );
+};
+
+export default ActivityTypesPage;
