@@ -18,7 +18,7 @@ export default function Calendar() {
         // Navigate to TestJournalEntry with the selected date as a query parameter
         if (selectedDate) {
             const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
-            navigate(`/TestJournal?date=${formattedDate}`);
+            navigate(`/Journal?date=${formattedDate}`);
         }
     };
 

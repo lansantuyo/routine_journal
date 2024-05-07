@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import JournalEntryViewSet, ActivityTypeViewSet, MetricTypeViewSet, ActivityViewSet, MetricViewSet, \
-    UserViewSet
+    UserViewSet, CategoryViewSet
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -11,6 +11,7 @@ router.register(r'metric_types', MetricTypeViewSet, basename='metric_types')
 router.register(r'activities', ActivityViewSet, basename='activities')
 router.register(r'metrics', MetricViewSet, basename='metrics')
 router.register(r'user', UserViewSet, basename='users')
+router.register(r'categories', CategoryViewSet, basename='categories')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

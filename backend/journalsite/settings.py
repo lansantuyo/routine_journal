@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+
+from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 import os
 
@@ -159,3 +161,6 @@ CORS_ORIGIN_WHITELIST = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Authorization',
+]
