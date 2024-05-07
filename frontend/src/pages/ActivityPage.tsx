@@ -1,8 +1,5 @@
 import axios from "axios";
 import { Component, ReactNode } from "react";
-import Header from "../components/Header";
-import {Button} from "reactstrap";
-import AddActivityForm from "./AddActivity";
 import { Link } from 'react-router-dom';
 
 
