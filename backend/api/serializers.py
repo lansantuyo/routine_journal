@@ -37,7 +37,6 @@ class MetricSerializer(serializers.ModelSerializer):
         return super(MetricSerializer, self).to_representation(instance)
 
 
-
 # Category Serializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,7 +53,6 @@ class ActivityTypeSerializer(serializers.ModelSerializer):
         model = ActivityType
         fields = ['id', 'name', 'description', 'category', 'metric_types']  # Include 'metric_types' here
         extra_kwargs = {"author": {"read_only": True}}
-
 
 
 # Activity Serializer

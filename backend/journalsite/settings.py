@@ -64,9 +64,6 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'api',
-
-    'activity',
-    'journal_entry',
 ]
 
 MIDDLEWARE = [

@@ -46,15 +46,6 @@ const Navbar = () => {
                 }}
             />
             <NavLink
-                label="Journal"
-                onClick={() => navigate('/Journal')}
-                className='nav-items'
-                style={{
-                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
-                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
-                }}
-            />
-            <NavLink
                 label="Activity Detail"
                 onClick={() => navigate('/Detail')}
                 className='nav-items'
@@ -70,15 +61,6 @@ const Navbar = () => {
                 style={{
                     backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
                     color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
-                }}
-            />
-            <NavLink
-                label="Test journal for dev"
-                onClick={() => navigate('/TestJournal')}
-                className='nav-items'
-                style={{
-                    backgroundColor: computedColorScheme === 'dark' ? '#715555' : '#C0A18D', 
-                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
                 }}
             />
         </AppShell.Navbar>

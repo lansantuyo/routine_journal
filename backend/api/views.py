@@ -108,6 +108,17 @@ class ActivityViewSet(viewsets.ModelViewSet):
         # Only return activities that belong to the current user's journal entries
         return Activity.objects.filter(journal_entry__author=self.request.user)
 
+    @action(detail=False, methods=['get'], url_path='by-type')
+    def get_activities_by_type(self, request):
+        activity_type_id = request.query_params.get('activity_type_id')
+        if not activity_type_id:
+            return Response({'error': 'Activity type ID parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        activities = self.get_queryset().filter(activity_type_id=activity_type_id)
+        serializer = self.get_serializer(activities, many=True)
+        return Response(serializer.data)
+
+
     @action(detail=False, methods=['post'], url_path='add_to_journal')
     def add_activity_to_journal(self, request):
         """Create an activity and add it to a specified journal entry."""
