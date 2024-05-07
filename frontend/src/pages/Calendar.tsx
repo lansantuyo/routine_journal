@@ -15,12 +15,17 @@ export default function Calendar() {
 
     const handleDateChange = (selectedDate: Date | null) => {
         setValue(selectedDate);
-        // Navigate to TestJournalEntry with the selected date as a query parameter
         if (selectedDate) {
-            const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
+            // Get the timezone offset in minutes and convert it to milliseconds
+            const timezoneOffset = selectedDate.getTimezoneOffset() * 60000;
+            // Create a new Date object adjusted for the timezone offset
+            const localDate = new Date(selectedDate.getTime() - timezoneOffset);
+            // Format the adjusted date as 'YYYY-MM-DD'
+            const formattedDate = localDate.toISOString().split('T')[0];
             navigate(`/Journal?date=${formattedDate}`);
         }
     };
+
 
     return (
         <Grid>
