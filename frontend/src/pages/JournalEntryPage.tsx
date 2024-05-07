@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import TextEditor from "../components/TextEditor";
-import {Grid, Button, Autocomplete, Drawer, Accordion, TextInput} from '@mantine/core';
+import {Grid, Button, Autocomplete, Drawer, Accordion, TextInput, Title} from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import api from "../api";
 import CreateActivityTypeModal from "../components/CreateActivityTypeModal";
@@ -50,6 +50,7 @@ const JournalEntryPage: React.FC = () => {
     const [newActivityType, setNewActivityType] = useState('');
     const [drawerOpened, setDrawerOpened] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
         const dateParam = query.get('date');
@@ -66,11 +67,13 @@ const JournalEntryPage: React.FC = () => {
             if (response.data.length > 0) {
                 const entry = response.data[0];
                 setContent(entry.content);
+                setTitle(entry.title);  // Set the title from the fetched data
                 setEntryId(entry.id);
                 const loadedActivities = await loadActivitiesWithMetrics(entry.activities || []);
                 setActivities(loadedActivities);
             } else {
                 setContent('');
+                setTitle('');  // Reset the title if no entry is found
                 setEntryId(null);
                 setActivities([]);
             }
@@ -78,6 +81,7 @@ const JournalEntryPage: React.FC = () => {
             console.error("Failed to fetch journal entry", error);
         }
     };
+
 
     const fetchMetrics = async (activityId: number) => {
         try {
@@ -101,6 +105,17 @@ const JournalEntryPage: React.FC = () => {
     //     const updatedActivities = await Promise.all(activities.map(activity => loadActivitiesWithMetrics(activity)));
     //     setActivities(updatedActivities);
     // };
+
+    useEffect(() => {
+        if (date && (debouncedContent || title) && entryId) {
+            const url = `/api/journal_entries/${entryId}/`;
+            const method = 'put';
+            api[method](url, { date, content: debouncedContent, title })
+                .then(() => console.log('Journal Entry updated'))
+                .catch(err => console.error('Failed to update Journal Entry', err));
+        }
+    }, [debouncedContent, date, entryId, title]);  // Include title in the dependency array
+
 
 
     const fetchActivityTypes = () => {
@@ -210,12 +225,19 @@ const JournalEntryPage: React.FC = () => {
     };
 
 
-
-
     return (
         <Grid>
             <Grid.Col span={12}>
-                <h2>Journal Entry for {date}</h2>
+                <Title order={1}>{date}</Title>
+                {/*<h2>Journal Entry for {date}</h2>*/}
+                <TextInput
+                    value={title}
+                    onChange={(event) => setTitle(event.currentTarget.value)}
+                    placeholder="Enter Journal Entry Title"
+                    styles={{ input: { border: 'none', fontSize: '20px', fontWeight: 'bold' } }}
+                    variant="unstyled"
+                />
+
                 <TextEditor initialContent={content} onContentChange={setContent} />
                 <Button onClick={() => setDrawerOpened(true)}>Manage Activities</Button>
             </Grid.Col>
@@ -241,29 +263,6 @@ const JournalEntryPage: React.FC = () => {
                     {activities.map((activity, index) => (
                         <Accordion.Item key={activity.id} value={`activity_${index}`}>
                             <Accordion.Control>{activity.activity_type.name}</Accordion.Control>
-                            {/*<Accordion.Panel>*/}
-                            {/*    <div>Description: {activity.activity_type.description || "No description"}</div>*/}
-                            {/*    <div>*/}
-                            {/*        Metrics:*/}
-                            {/*        {activity.activity_type.metric_types?.map(metricType => {*/}
-                            {/*            const existingMetric = activity.metrics?.find(m => m.metric_type.id === metricType.id);*/}
-                            {/*            return (*/}
-                            {/*                <TextInput*/}
-                            {/*                    key={metricType.id}*/}
-                            {/*                    label={metricType.name}*/}
-                            {/*                    description={metricType.description}*/}
-                            {/*                    value={existingMetric ? existingMetric.value : ''}*/}
-                            {/*                    // onChange={(event) => handleMetricChange(*/}
-                            {/*                    //     activity.id,*/}
-                            {/*                    //     metricType.id,*/}
-                            {/*                    //     event.currentTarget.value,*/}
-                            {/*                    //     existingMetric ? existingMetric.id : null*/}
-                            {/*                    // )}*/}
-                            {/*                />*/}
-                            {/*            );*/}
-                            {/*        })}*/}
-                            {/*    </div>*/}
-                            {/*</Accordion.Panel>*/}
                             <Accordion.Panel>
                                 <div>Description: {activity.activity_type.description || "No description"}</div>
                                 <div>
