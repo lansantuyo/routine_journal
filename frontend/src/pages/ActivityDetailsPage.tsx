@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Card, Text, Title, Container, List, Anchor } from '@mantine/core';
+import {useNavigate, useParams} from 'react-router-dom';
+import {Card, Text, Title, Container, List, Anchor, Grid, Button, UnstyledButton, Loader} from '@mantine/core';
 import api from '../api';
 
 interface ActivityType {
@@ -9,19 +9,39 @@ interface ActivityType {
     description?: string;
 }
 
+interface MetricType {
+    id: number;
+    name: string;
+    description?: string;
+}
+
+interface Metric {
+    id: number;
+    metric_type: MetricType;
+    value: string;
+}
+
 interface Activity {
     id: number;
     journal_entry: number;
-    journal_entry_title: string;
-    journal_entry_date: string; // Reflects the updated interface
+    metrics: Metric[]; // Ensure this is not optional if metrics are always expected
+}
+
+interface JournalEntry {
+    id: number;
+    title: string;
+    date: string;
+    content: string;
 }
 
 const ActivityDetailsPage: React.FC = () => {
     const { pk } = useParams<{ pk: string }>();
     const [activityType, setActivityType] = useState<ActivityType | null>(null);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [journalEntries, setJournalEntries] = useState<Record<number, JournalEntry>>({});
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchActivityType();
@@ -31,7 +51,7 @@ const ActivityDetailsPage: React.FC = () => {
     const fetchActivityType = async () => {
         try {
             const response = await api.get(`/api/activity_types/${pk}/`);
-            setActivityType(response.data);
+            setActivityType(response.data as ActivityType);
         } catch (error: any) {
             console.error("Failed to fetch activity type", error);
             setError("Failed to fetch activity type. Please try again later.");
@@ -41,13 +61,32 @@ const ActivityDetailsPage: React.FC = () => {
     const fetchActivities = async () => {
         try {
             const response = await api.get(`/api/activities/by-type/?activity_type_id=${pk}`);
-            setActivities(response.data);
-            setLoading(false);
+            const fetchedActivities = response.data as Activity[];
+            setActivities(fetchedActivities);
+            const journalEntryIds = [...new Set(fetchedActivities.map(activity => activity.journal_entry))];
+            fetchJournalEntries(journalEntryIds);
         } catch (error) {
             console.error("Failed to fetch activities by type", error);
             setError("Failed to fetch activities. Please try again later.");
             setLoading(false);
         }
+    };
+
+    const fetchJournalEntries = async (journalEntryIds: number[]) => {
+        for (const id of journalEntryIds) {
+            if (!journalEntries[id]) {
+                try {
+                    const response = await api.get(`/api/journal_entries/${id}/`);
+                    setJournalEntries(prevEntries => ({
+                        ...prevEntries,
+                        [id]: response.data as JournalEntry
+                    }));
+                } catch (error) {
+                    console.error(`Failed to fetch journal entry ${id}`, error);
+                }
+            }
+        }
+        setLoading(false);
     };
 
     if (loading) {
@@ -65,22 +104,42 @@ const ActivityDetailsPage: React.FC = () => {
 
             <Title order={2}>Activities</Title>
             {activities.length > 0 ? (
-                <List>
+                <Grid>
                     {activities.map((activity) => (
-                        <List.Item key={activity.id}>
+                        <Grid.Col key={activity.id} span={4}>
                             <Card shadow="sm" padding="lg">
+                                {journalEntries[activity.journal_entry] ? (
+                                    <Button
+                                        onClick={() => navigate(`/Journal?date=${journalEntries[activity.journal_entry].date}`)}
+                                        style={{ marginTop: '10px', backgroundColor: '#5c6ac4', color: 'white' }}
+                                    >
+                                        {journalEntries[activity.journal_entry].title ? `${journalEntries[activity.journal_entry].title} - ${journalEntries[activity.journal_entry].date}` : journalEntries[activity.journal_entry].date}
+                                    </Button>
+                                ) : (
+                                    <Text style={{ marginTop: '10px' }}>
+                                        <Loader size="sm" />
+                                        Loading journal entry...
+                                    </Text>
+                                )}
+
                                 <Text>Activity ID: {activity.id}</Text>
-                                <Text>Journal Entry Date: {activity.journal_entry_date}</Text>
-                                <Anchor href={`/journal/${activity.journal_entry}`} target="_blank">
-                                    View Journal Entry: {activity.journal_entry_title}
-                                </Anchor>
+                                {activity.metrics && activity.metrics.length > 0 ? (
+                                    activity.metrics.map((metric) => (
+                                        <Text key={metric.id}>
+                                            {metric.metric_type.name}: {metric.value}
+                                        </Text>
+                                    ))
+                                ) : (
+                                    <Text>No metrics found for this activity.</Text>
+                                )}
                             </Card>
-                        </List.Item>
+                        </Grid.Col>
                     ))}
-                </List>
+                </Grid>
             ) : (
                 <Text>No activities found for this type.</Text>
             )}
+
         </Container>
     );
 };
