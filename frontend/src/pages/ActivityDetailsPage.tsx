@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {Card, Text, Title, Container, List, Anchor, Grid, Button, UnstyledButton, Loader} from '@mantine/core';
 import api from '../api';
+import MetricsLineCharts from "../components/MetricLineChart";
 
 interface ActivityType {
     id: number;
@@ -25,6 +26,8 @@ interface Activity {
     id: number;
     journal_entry: number;
     metrics: Metric[]; // Ensure this is not optional if metrics are always expected
+    date: string;
+
 }
 
 interface JournalEntry {
@@ -61,6 +64,7 @@ const ActivityDetailsPage: React.FC = () => {
     const fetchActivities = async () => {
         try {
             const response = await api.get(`/api/activities/by-type/?activity_type_id=${pk}`);
+            console.log("Activities fetch result:", response.data);
             const fetchedActivities = response.data as Activity[];
             setActivities(fetchedActivities);
             const journalEntryIds = [...new Set(fetchedActivities.map(activity => activity.journal_entry))];
@@ -135,6 +139,9 @@ const ActivityDetailsPage: React.FC = () => {
                             </Card>
                         </Grid.Col>
                     ))}
+                        <Grid.Col>
+                            <MetricsLineCharts activities={activities} />
+                        </Grid.Col>
                 </Grid>
             ) : (
                 <Text>No activities found for this type.</Text>
