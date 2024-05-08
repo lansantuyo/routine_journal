@@ -106,15 +106,15 @@ const JournalEntryPage: React.FC = () => {
     //     setActivities(updatedActivities);
     // };
 
-    useEffect(() => {
-        if (date && (debouncedContent || title) && entryId) {
-            const url = `/api/journal_entries/${entryId}/`;
-            const method = 'put';
-            api[method](url, { date, content: debouncedContent, title })
-                .then(() => console.log('Journal Entry updated'))
-                .catch(err => console.error('Failed to update Journal Entry', err));
-        }
-    }, [debouncedContent, date, entryId, title]);  // Include title in the dependency array
+    // useEffect(() => {
+    //     if (date && (debouncedContent || title) && entryId) {
+    //         const url = `/api/journal_entries/${entryId}/`;
+    //         const method = 'put';
+    //         api[method](url, { date, content: debouncedContent, title })
+    //             .then(() => console.log('Journal Entry updated'))
+    //             .catch(err => console.error('Failed to update Journal Entry', err));
+    //     }
+    // }, [debouncedContent, date, entryId, title]);  // Include title in the dependency array
 
 
 
@@ -132,15 +132,32 @@ const JournalEntryPage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Ensure there is content and a date before trying to save.
-        if (date && debouncedContent) {
+        // Determine the API method and URL based on whether an entryId is present
+        if (date && (debouncedContent || title) && (entryId || date)) {
             const url = entryId ? `/api/journal_entries/${entryId}/` : '/api/journal_entries/';
             const method = entryId ? 'put' : 'post';
-            api[method](url, { date, content: debouncedContent })
-                .then(() => console.log('Journal Entry saved'))
+            api[method](url, { date, content: debouncedContent, title })
+                .then(response => {
+                    console.log(entryId ? 'Journal Entry updated' : 'Journal Entry created');
+                    // If creating a new entry, update the entryId with the new one from the response
+                    if (!entryId && response.data.id) {
+                        setEntryId(response.data.id);
+                    }
+                })
                 .catch(err => console.error('Failed to save Journal Entry', err));
         }
-    }, [debouncedContent, date, entryId]); // This effect reacts to changes in the content, date, or entry ID.
+    }, [debouncedContent, date, entryId, title]);
+
+    // useEffect(() => {
+    //     // Ensure there is content and a date before trying to save.
+    //     if (date && debouncedContent) {
+    //         const url = entryId ? `/api/journal_entries/${entryId}/` : '/api/journal_entries/';
+    //         const method = entryId ? 'put' : 'post';
+    //         api[method](url, { date, content: debouncedContent })
+    //             .then(() => console.log('Journal Entry saved'))
+    //             .catch(err => console.error('Failed to save Journal Entry', err));
+    //     }
+    // }, [debouncedContent, date, entryId]); // This effect reacts to changes in the content, date, or entry ID.
 
     const handleActivitySelect = async (value: string) => {
         const match = activityTypes.find(activity => activity.label === value);
