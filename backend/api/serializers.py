@@ -59,10 +59,11 @@ class ActivityTypeSerializer(serializers.ModelSerializer):
 class ActivitySerializer(serializers.ModelSerializer):
     activity_type = ActivityTypeSerializer(read_only=True)
     metrics = MetricSerializer(many=True, read_only=True)
+    date = serializers.DateField(source='journal_entry.date', read_only=True)  # Add this line
 
     class Meta:
         model = Activity
-        fields = ['id', 'journal_entry', 'activity_type', 'metrics']
+        fields = ['id', 'journal_entry', 'activity_type', 'metrics', 'date']  # Include 'journal_entry_date'
 
 
 # Journal Entry Serializer
