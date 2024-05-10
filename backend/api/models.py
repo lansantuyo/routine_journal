@@ -67,7 +67,7 @@ class Activity(models.Model):
 class Metric(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='metrics')
     metric_type = models.ForeignKey(MetricType, on_delete=models.CASCADE)
-    value = models.CharField(max_length=255)
+    value = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"{self.metric_type.name}: {self.value}"
