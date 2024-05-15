@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Flex,
     AppShell,
@@ -6,11 +7,12 @@ import {
     useMantineColorScheme,
     useComputedColorScheme,
 } from '@mantine/core';
+import { FaSun, FaMoon } from 'react-icons/fa';
+import { NavLink, useLocation } from "react-router-dom";
 
-import {FaSun, FaMoon} from 'react-icons/fa';
-
-const Header = ({toggleDesktop, toggleMobile, mobileOpened, desktopOpened}: any) => {
-    const {setColorScheme} = useMantineColorScheme();
+const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: any) => {
+    const location = useLocation();
+    const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light');
 
     const toggleColorScheme = () => {
@@ -20,14 +22,72 @@ const Header = ({toggleDesktop, toggleMobile, mobileOpened, desktopOpened}: any)
     return (
         <AppShell.Header 
             style = {{
-                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#AE866C', 
-                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
-                borderBottom: 'none'
+                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'                            
             }}
         >
-            <Flex justify="space-between" align='center' style={{padding: '10px 20px'}}>
-                <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom='sm' size='sm' />
-                <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom='sm' size='sm' />
+            <Flex 
+                justify="space-between" 
+                align='center' 
+                style={{ 
+                    padding: '40px', 
+                    height: '100%'
+                }}
+            >
+                {/* Navigation links */}
+                <Flex align='center'>
+                    <NavLink 
+                        to="/" 
+                        style={{ 
+                            marginLeft: '10px', 
+                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                            fontWeight: 'bold',
+                            textDecoration: 'none',
+                            marginRight: '20px',
+                            padding: '5px 10px',
+                            borderRadius: '5px',
+                            transition: 'all 0.3s ease',
+                            backgroundColor: location.pathname === '/' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Homepage
+                    </NavLink>
+                    <NavLink 
+                        to="/Activities" 
+                        style={{ 
+                            marginLeft: '10px', 
+                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                            fontWeight: 'bold',
+                            textDecoration: 'none',
+                            marginRight: '20px',
+                            padding: '5px 10px',
+                            borderRadius: '5px',
+                            transition: 'all 0.3s ease',
+                            backgroundColor: location.pathname === '/Activities' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Activities
+                    </NavLink>
+                    <NavLink 
+                        to="/Timer" 
+                        style={{ 
+                            marginLeft: '10px', 
+                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                            fontWeight: 'bold',
+                            textDecoration: 'none',
+                            padding: '5px 10px',
+                            borderRadius: '5px',
+                            transition: 'all 0.3s ease',
+                            backgroundColor: location.pathname === '/Timer' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Timer
+                    </NavLink>
+                </Flex>
+                {/* Toggle button */}
                 <Button 
                     size='sm'
                     variant='link'
@@ -44,4 +104,4 @@ const Header = ({toggleDesktop, toggleMobile, mobileOpened, desktopOpened}: any)
     );
 }
 
-export default Header
+export default Header;
