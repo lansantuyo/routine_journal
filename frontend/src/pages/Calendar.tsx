@@ -59,7 +59,6 @@ export default function Calendar() {
                             width: '70px',
                             backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
                             color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
-                             
                         },
                         calendarHeaderLevel: {
                             fontFamily: 'Inter',
@@ -75,8 +74,22 @@ export default function Calendar() {
                 />
             </div>
             <div style={{ marginLeft: '150px' }}>
-                <h2>Journal of</h2>
-                <h1>USERNAME :D</h1>
+                <h2
+                    style={{
+                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Journal of
+                </h2>
+                <h1
+                    style={{
+                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    USERNAME :D
+                </h1>
             </div>
         </Container>
     );
