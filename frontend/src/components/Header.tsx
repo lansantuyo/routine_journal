@@ -23,7 +23,8 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
         <AppShell.Header 
             style = {{
                 backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
-                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'                            
+                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                border: 'none'
             }}
         >
             <Flex 

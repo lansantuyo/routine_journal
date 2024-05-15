@@ -1,12 +1,9 @@
 import '../styles/Home.css'
 import Header from "../components/Header";
 import RouterSwitcher from "../components/RouterSwitcher";
-
 import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
-
 import { AppShell, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
-
 import { useDisclosure } from "@mantine/hooks";
 
 function Home() {
@@ -21,8 +18,6 @@ function Home() {
 
     return (
         <AppShell
-            header = {{ height: 60  }}
-            navbar = {{ width: 300, breakpoint: 'sm', collapsed: {mobile: !mobileOpened, desktop: !desktopOpened}}}
             padding = 'md'
             style = {{ 
                 backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
@@ -35,7 +30,7 @@ function Home() {
                 desktopOpened={desktopOpened} 
                 mobileOpened={mobileOpened} 
             />
-            <AppShell.Main>
+            <AppShell.Main style={{ paddingTop: `150px` }}>
                 <RouterSwitcher />
             </AppShell.Main>
         </AppShell>

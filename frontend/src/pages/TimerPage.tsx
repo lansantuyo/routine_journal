@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Notification } from '@mantine/core';
+import { Button, Notification, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { FaPlay, FaPause, FaSync } from 'react-icons/fa';
 import '../styles/TimerPage.css';
 
@@ -13,6 +13,12 @@ export default function TimerPage() {
     const [editedTime, setEditedTime] = useState<string>('');
     const [taskDescription, setTaskDescription] = useState<string>('');
     const [tasks, setTasks] = useState<{ id: number; description: string; completed: boolean }[]>([]);
+    const { setColorScheme } = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     useEffect(() => {
         if (isActive) {
@@ -41,10 +47,13 @@ export default function TimerPage() {
     }, [isActive]);
 
     const formatTime = (time: number): string => {
-        const minutes = Math.floor(time / 60);
+        const hrs = Math.floor(time / 3600);
+        const mins = Math.floor((time % 3600) / 60);
         const remainingSeconds = time % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        return `${hrs.toString().padStart(2, '00')}:${mins.toString().padStart(2, '00')}:${remainingSeconds.toString().padStart(2, '00')}`;
     };
+
+    const [hrs, mins, secs] = formatTime(seconds).split(':').map(Number);
 
     const handleStart = () => {
         setIsActive(true);
@@ -68,16 +77,24 @@ export default function TimerPage() {
 
     const handleSaveEdit = () => {
         setIsEditing(false);
-        const [minutesStr, secondsStr] = editedTime.split(':');
-        const minutes = parseInt(minutesStr, 10);
-        const seconds = parseInt(secondsStr, 10);
-        setInitialTime(isNaN(minutes) || isNaN(seconds) ? 0 : minutes * 60 + seconds);
-        setSeconds(isNaN(minutes) || isNaN(seconds) ? 0 : minutes * 60 + seconds);
+        const [hrsStr, minsStr, secsStr] = editedTime.split(':');
+        const hrs = parseInt(hrsStr, 10);
+        const mins = parseInt(minsStr, 10);
+        const secs = parseInt(secsStr, 10);
+        setInitialTime(isNaN(hrs) || isNaN(mins) || isNaN(secs) ? 0 : hrs * 3600 + mins * 60 + secs);
+        setSeconds(isNaN(hrs) || isNaN(mins) || isNaN(secs) ? 0 : hrs * 3600 + mins * 60 + secs);
+        setIsEditing(false);
     };
 
     const handleCancelEdit = () => {
         setIsEditing(false);
         setEditedTime(formatTime(initialTime));
+    };
+
+    const handleBackgroundClick = () => {
+        if (isEditing) { 
+            setIsEditing(false); 
+        }
     };
 
     const handleTaskDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,20 +118,66 @@ export default function TimerPage() {
     };
 
     return (
-        <div className="timer-container">
-            <h1 className="timer-text" onClick={handleEdit} style={{ cursor: 'pointer' }}>
-                {isEditing ? <input value={editedTime} onChange={(e) => setEditedTime(e.target.value)} onBlur={handleSaveEdit} /> : <span>{formatTime(seconds)}</span>}
-            </h1>
+        <div 
+            className="timer-container"
+            style={{ 
+                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                paddingTop: `150px`
+            }}
+        >
+            <div className="timer-display" onClick={handleEdit}>
+                {isEditing ? (
+                    <input
+                        className="timer-input"
+                        value={editedTime}
+                        onChange={(e) => setEditedTime(e.target.value)}
+                        onBlur={handleSaveEdit}
+                    />
+                ) : (
+                    <div 
+                        className="timer-display-text"
+                        style={{
+                            fontSize: '80px'
+                        }}
+                    >
+                        {hrs} : {mins} : {secs}
+                    </div>
+                )}
+            </div> 
             <div className="button-container">
-            <Button onClick={handleStart} disabled={isActive} variant="light" color="#ead8c2" radius="lg">
-                <FaPlay /> Start
-            </Button>
-            <Button onClick={handlePause} disabled={!isActive} variant="light" color="#ead8c2" radius="lg">
-                <FaPause /> Pause
-            </Button>
-            <Button onClick={handleReset} variant="light" color="#ead8c2" radius="lg">
-                <FaSync /> Restart
-            </Button>
+                <Button 
+                    onClick={handleStart} 
+                    disabled={isActive} 
+                    variant="light" 
+                    color={
+                        computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2'
+                    } 
+                    radius="lg"
+                >
+                    <FaPlay /> Start
+                </Button>
+                <Button 
+                    onClick={handlePause} 
+                    disabled={!isActive} 
+                    variant="light" 
+                    color={
+                        computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2'
+                    } 
+                    radius="lg"
+                >
+                    <FaPause /> Pause
+                </Button>
+                <Button 
+                    onClick={handleReset} 
+                    variant="light" 
+                    color={
+                        computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2'
+                    } 
+                    radius="lg"
+                >
+                    <FaSync /> Restart
+                </Button>
             </div>
             {showNotification && (
                 <Notification
@@ -130,7 +193,13 @@ export default function TimerPage() {
                     value={taskDescription}
                     onChange={handleTaskDescriptionChange}
                 />
-                <Button onClick={addTask} variant="light" color="#ead8c2">
+                <Button 
+                    onClick={addTask} 
+                    variant="light" 
+                    color={
+                        computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2'
+                    }
+                >
                     Add Task
                 </Button>
                 <ul>
@@ -141,7 +210,14 @@ export default function TimerPage() {
                                 checked={task.completed}
                                 onChange={() => toggleTaskCompletion(task.id)}
                             />
-                            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.description}</span>
+                            <span 
+                                style={{ 
+                                    textDecoration: task.completed ? 'line-through' : 'none', 
+                                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F' 
+                                }}
+                            >
+                                {task.description}
+                            </span>
                         </li>
                     ))}
                 </ul>
