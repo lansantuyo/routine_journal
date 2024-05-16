@@ -5,16 +5,20 @@ import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import { AppShell, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
+import { useUser } from '../components/UserContext';
 
 function Home() {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
     const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
     const computedColorScheme = useComputedColorScheme('light');
     const { setColorScheme } = useMantineColorScheme();
+    const { username } = useUser();
 
     const toggleColorScheme = () => {
         setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
     }
+
+    console.log('Home component - username:', username);
 
     return (
         <AppShell
@@ -31,7 +35,7 @@ function Home() {
                 mobileOpened={mobileOpened} 
             />
             <AppShell.Main style={{ paddingTop: `150px` }}>
-                <RouterSwitcher />
+                <RouterSwitcher username={username} />
             </AppShell.Main>
         </AppShell>
     );

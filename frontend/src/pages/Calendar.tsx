@@ -6,7 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 
-export default function Calendar() {
+interface CalendarProps {
+    username: string;
+}
+
+export default function Calendar({ username }: CalendarProps) {
     const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
     const navigate = useNavigate(); // Hook for navigation
@@ -88,7 +92,7 @@ export default function Calendar() {
                         color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
                     }}
                 >
-                    USERNAME :D
+                    {username}
                 </h1>
             </div>
         </Container>
