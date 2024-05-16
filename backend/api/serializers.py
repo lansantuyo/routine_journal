@@ -47,23 +47,26 @@ class CategorySerializer(serializers.ModelSerializer):
 
 # Activity Type Serializer
 class ActivityTypeSerializer(serializers.ModelSerializer):
-    metric_types = MetricTypeSerializer(many=True, read_only=True)  # Add this line
+    metric_types = MetricTypeSerializer(many=True, read_only=True)
 
     class Meta:
         model = ActivityType
-        fields = ['id', 'name', 'description', 'category', 'metric_types']  # Include 'metric_types' here
+        fields = ['id', 'name', 'description', 'category', 'metric_types']
         extra_kwargs = {"author": {"read_only": True}}
 
 
 # Activity Serializer
 class ActivitySerializer(serializers.ModelSerializer):
     activity_type = ActivityTypeSerializer(read_only=True)
+    activity_type_id = serializers.PrimaryKeyRelatedField(
+        queryset=ActivityType.objects.all(), source='activity_type', write_only=True
+    )
     metrics = MetricSerializer(many=True, read_only=True)
-    date = serializers.DateField(source='journal_entry.date', read_only=True)  # Add this line
+    date = serializers.DateField(source='journal_entry.date', read_only=True)
 
     class Meta:
         model = Activity
-        fields = ['id', 'journal_entry', 'activity_type', 'metrics', 'date']  # Include 'journal_entry_date'
+        fields = ['id', 'journal_entry', 'activity_type', 'activity_type_id', 'metrics', 'date']
 
 
 # Journal Entry Serializer
@@ -74,3 +77,18 @@ class JournalEntrySerializer(serializers.ModelSerializer):
         model = JournalEntry
         fields = ['id', 'title', 'date', 'content', 'created_date', 'author', 'activities']
         extra_kwargs = {"author": {"read_only": True}}
+
+    def validate(self, data):
+        # Ensure there's only one journal entry per date for each user
+        user = self.context['request'].user
+        if JournalEntry.objects.filter(date=data['date'], author=user).exists():
+            raise serializers.ValidationError("You already have a journal entry for this date.")
+        return data
+
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        validated_data['author'] = self.context['request'].user
+        return super().update(instance, validated_data)
