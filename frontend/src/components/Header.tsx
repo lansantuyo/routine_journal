@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Flex,
     AppShell,
@@ -22,7 +21,7 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
     return (
         <AppShell.Header 
             style = {{
-                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
                 color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
                 border: 'none'
             }}
@@ -48,7 +47,7 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
                             padding: '5px 10px',
                             borderRadius: '5px',
                             transition: 'all 0.3s ease',
-                            backgroundColor: location.pathname === '/' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            backgroundColor: location.pathname === '/' ? (computedColorScheme === 'dark' ? '#543F3F' : '#C0A18D') : 'transparent',
                             cursor: 'pointer'
                         }}
                     >
@@ -65,7 +64,7 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
                             padding: '5px 10px',
                             borderRadius: '5px',
                             transition: 'all 0.3s ease',
-                            backgroundColor: location.pathname === '/Activities' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            backgroundColor: location.pathname === '/Activities' ? (computedColorScheme === 'dark' ? '#543F3F' : '#C0A18D') : 'transparent',
                             cursor: 'pointer'
                         }}
                     >
@@ -81,7 +80,7 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
                             padding: '5px 10px',
                             borderRadius: '5px',
                             transition: 'all 0.3s ease',
-                            backgroundColor: location.pathname === '/Timer' ? (computedColorScheme === 'dark' ? '#715555' : '#C0A18D') : 'transparent',
+                            backgroundColor: location.pathname === '/Timer' ? (computedColorScheme === 'dark' ? '#543F3F' : '#C0A18D') : 'transparent',
                             cursor: 'pointer'
                         }}
                     >

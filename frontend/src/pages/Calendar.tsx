@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import {AppShell, Burger, Container, Space, Group, Stack, Collapse, Select, Grid} from '@mantine/core';
-import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
-import { Link } from 'react-router-dom';
+import { Container, useMantineColorScheme, useComputedColorScheme } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import '@mantine/core/styles.css';
@@ -10,7 +8,6 @@ import '@mantine/dates/styles.css';
 
 export default function Calendar() {
     const [value, setValue] = useState<Date | null>(null);
-    const [opened, { toggle: toggleDesktop }] = useDisclosure();
     const navigate = useNavigate(); // Hook for navigation
     const { setColorScheme } = useMantineColorScheme();
     const computedColorScheme = useComputedColorScheme('light');
@@ -78,7 +75,6 @@ export default function Calendar() {
             <div style={{ marginLeft: '150px' }}>
                 <h2
                     style={{
-                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
                         color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
                     }}
                 >
@@ -86,7 +82,6 @@ export default function Calendar() {
                 </h2>
                 <h1
                     style={{
-                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
                         color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
                     }}
                 >

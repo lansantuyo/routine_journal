@@ -251,12 +251,19 @@ const JournalEntryPage: React.FC = () => {
     return (
         <Grid 
             style={{ 
-                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
                 color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
             }}
         >
             <Grid.Col span={12}>
-                <Title order={1}>{date}</Title>
+                <Title 
+                    order={1}
+                    style={{
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#2D2222'
+                    }}
+                >
+                    Journal Entry for {date}
+                </Title>
                 {/*<h2>Journal Entry for {date}</h2>*/}
                 <TextInput
                     value={title}
@@ -267,7 +274,7 @@ const JournalEntryPage: React.FC = () => {
                             border: 'none', 
                             fontSize: '20px', 
                             fontWeight: 'bold',
-                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                            color: computedColorScheme === 'light' ? '#543F3F' : '#C0A18D'
                         }
                     }}
                     variant="unstyled"
@@ -293,19 +300,10 @@ const JournalEntryPage: React.FC = () => {
                 size="lg"
                 position="right"
                 style={{ 
-                    backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                    backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
                     color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
                 }}
             >
-                <Button 
-                    onClick={() => setModalOpened(true)}
-                    style={{ 
-                        backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
-                        color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
-                    }}
-                >
-                    Add New Activity Type
-                </Button>
                 <Autocomplete
                     label="Choose activities"
                     placeholder="Select or type an Activity"
@@ -346,6 +344,15 @@ const JournalEntryPage: React.FC = () => {
                         </Accordion.Item>
                     ))}
                 </Accordion>
+                <Button 
+                    onClick={() => setModalOpened(true)}
+                    style={{ 
+                        backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Add New Activity Type
+                </Button>
             </Drawer>
 
             <CreateActivityTypeModal

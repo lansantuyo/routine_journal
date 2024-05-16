@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {Card, Text, Title, Container, List, Anchor, Grid, Button, UnstyledButton, Loader} from '@mantine/core';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Card, Text, Title, Container, Grid, Button, Loader, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import api from '../api';
 import MetricsLineCharts from "../components/MetricLineChart";
 
@@ -45,6 +45,12 @@ const ActivityDetailsPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+    const computedColorScheme = useComputedColorScheme('light');
+    const { setColorScheme } = useMantineColorScheme();
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     useEffect(() => {
         fetchActivityType();
@@ -111,11 +117,22 @@ const ActivityDetailsPage: React.FC = () => {
                 <Grid>
                     {activities.map((activity) => (
                         <Grid.Col key={activity.id} span={4}>
-                            <Card shadow="sm" padding="lg">
+                            <Card 
+                                shadow="sm" 
+                                padding="lg"
+                                style={{ 
+                                    backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                                    color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
+                                }}
+                            >
                                 {journalEntries[activity.journal_entry] ? (
                                     <Button
                                         onClick={() => navigate(`/Journal?date=${journalEntries[activity.journal_entry].date}`)}
-                                        style={{ marginTop: '10px', backgroundColor: '#5c6ac4', color: 'white' }}
+                                        style={{ 
+                                            marginTop: '10px', 
+                                            backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
+                                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                                        }}
                                     >
                                         {journalEntries[activity.journal_entry].title ? `${journalEntries[activity.journal_entry].title} - ${journalEntries[activity.journal_entry].date}` : journalEntries[activity.journal_entry].date}
                                     </Button>

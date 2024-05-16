@@ -31,7 +31,7 @@ function AddActivityForm() {
       className="form-container"
       onSubmit={handleSubmit}
       style={{ 
-        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+        backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
         color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
       }}
     >
