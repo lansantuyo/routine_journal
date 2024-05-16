@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import TextEditor from "../components/TextEditor";
-import {Grid, Button, Autocomplete, Drawer, Accordion, TextInput, Title} from '@mantine/core';
+import {Grid, Button, Autocomplete, Drawer, Accordion, TextInput, Title, useMantineColorScheme, useComputedColorScheme } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import api from "../api";
 import CreateActivityTypeModal from "../components/CreateActivityTypeModal";
@@ -51,6 +51,12 @@ const JournalEntryPage: React.FC = () => {
     const [drawerOpened, setDrawerOpened] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
     const [title, setTitle] = useState<string>('');
+    const { setColorScheme } = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     useEffect(() => {
         const dateParam = query.get('date');
@@ -243,7 +249,12 @@ const JournalEntryPage: React.FC = () => {
 
 
     return (
-        <Grid>
+        <Grid 
+            style={{ 
+                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+            }}
+        >
             <Grid.Col span={12}>
                 <Title order={1}>{date}</Title>
                 {/*<h2>Journal Entry for {date}</h2>*/}
@@ -251,12 +262,27 @@ const JournalEntryPage: React.FC = () => {
                     value={title}
                     onChange={(event) => setTitle(event.currentTarget.value)}
                     placeholder="Enter Journal Entry Title"
-                    styles={{ input: { border: 'none', fontSize: '20px', fontWeight: 'bold' } }}
+                    styles={{ 
+                        input: { 
+                            border: 'none', 
+                            fontSize: '20px', 
+                            fontWeight: 'bold',
+                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                        }
+                    }}
                     variant="unstyled"
                 />
 
                 <TextEditor initialContent={content} onContentChange={setContent} />
-                <Button onClick={() => setDrawerOpened(true)}>Manage Activities</Button>
+                <Button 
+                    onClick={() => setDrawerOpened(true)}
+                    style={{ 
+                        backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Manage Activities
+                </Button>
             </Grid.Col>
 
             <Drawer
@@ -266,8 +292,20 @@ const JournalEntryPage: React.FC = () => {
                 padding="xl"
                 size="lg"
                 position="right"
+                style={{ 
+                    backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                }}
             >
-                <Button onClick={() => setModalOpened(true)}>Add New Activity Type</Button>
+                <Button 
+                    onClick={() => setModalOpened(true)}
+                    style={{ 
+                        backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Add New Activity Type
+                </Button>
                 <Autocomplete
                     label="Choose activities"
                     placeholder="Select or type an Activity"

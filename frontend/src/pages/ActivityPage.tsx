@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api'; // Import your API utility that configures axios
-import { Card, Text, Grid, Button } from '@mantine/core';
+import { Card, Text, Grid, Button, useMantineColorScheme, useComputedColorScheme } from '@mantine/core';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 // Define an interface for ActivityType if not already defined
@@ -13,6 +13,12 @@ interface ActivityType {
 const ActivityTypesPage: React.FC = () => {
     const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
     const navigate = useNavigate(); // Initialize the navigate function
+    const { setColorScheme } = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     useEffect(() => {
         fetchActivityTypes();
@@ -40,7 +46,15 @@ const ActivityTypesPage: React.FC = () => {
                         <Text>{activityType.name}</Text>
                         <Text size="sm">{activityType.description || "No description provided."}</Text>
                         {/* Button to navigate to activity detail page */}
-                        <Button onClick={() => handleNavigate(activityType.id)}>View Details</Button>
+                        <Button 
+                            onClick={() => handleNavigate(activityType.id)}
+                            style = {{
+                                backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                            }}
+                        >
+                            View Details
+                        </Button>
                     </Card>
                 </Grid.Col>
             ))}

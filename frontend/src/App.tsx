@@ -4,6 +4,7 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFoundPage from "./pages/NotFoundPage"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 
 function Logout() {
   localStorage.clear()
@@ -16,7 +17,25 @@ function RegisterAndLogout() {
 }
 
 function App() {
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme('light');
+
+  const toggleColorScheme = () => {
+      setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+  }
+
   return (
+    <div 
+      className="app-container"
+      style={{ 
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+      }}
+    >
       <BrowserRouter>
         <Routes>
           <Route
@@ -33,6 +52,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
       </BrowserRouter>
+    </div>
   )
 }
 

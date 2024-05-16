@@ -26,7 +26,6 @@ p {
   -webkit-align-self: auto;
   -ms-flex-item-align: auto;
   align-self: auto;
-  /* background: #99f; */
   margin: 5px 0 5px 5px;
   vertical-align: middle;
 }
