@@ -81,7 +81,11 @@ class JournalEntrySerializer(serializers.ModelSerializer):
     def validate(self, data):
         # Ensure there's only one journal entry per date for each user
         user = self.context['request'].user
-        if JournalEntry.objects.filter(date=data['date'], author=user).exists():
+        journal_entry_id = self.instance.id if self.instance else None
+
+        # If it's an update, exclude the current instance from the check
+        existing_entries = JournalEntry.objects.filter(date=data['date'], author=user).exclude(id=journal_entry_id)
+        if existing_entries.exists():
             raise serializers.ValidationError("You already have a journal entry for this date.")
         return data
 
@@ -92,3 +96,4 @@ class JournalEntrySerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data['author'] = self.context['request'].user
         return super().update(instance, validated_data)
+
