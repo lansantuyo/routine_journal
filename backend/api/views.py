@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -62,8 +63,34 @@ class JournalEntryViewSet(viewsets.ModelViewSet):
         return Response({"error": "Date parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
-        # Automatically set the author to the currently authenticated user when creating a new journal entry
+        # Check if the journal entry already exists for the given date and user
+        if JournalEntry.objects.filter(date=serializer.validated_data['date'], author=self.request.user).exists():
+            raise ValidationError('You already have a journal entry for this date.')
+
         serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        # Get the instance being updated
+        instance = self.get_object()
+
+        # Check if the updated journal entry would violate the unique constraint
+        if JournalEntry.objects.filter(date=serializer.validated_data['date'], author=self.request.user).exclude(
+                pk=instance.pk).exists():
+            raise ValidationError('You already have a journal entry for this date.')
+
+        serializer.save()
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            return super().update(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
