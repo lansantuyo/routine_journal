@@ -33,14 +33,24 @@ export default function Calendar({ username }: CalendarProps) {
         }
     };
 
-
     return (
-        <Container 
-            style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center'
-        }}>
+        <Container
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <div style={{ marginBottom: '20px' }}>
+                <h2
+                    style={{
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Journal of {username}
+                </h2>
+            </div>
             <div>
                 <DatePicker
                     allowDeselect={true}
@@ -60,7 +70,7 @@ export default function Calendar({ username }: CalendarProps) {
                             fontSize: '32px',
                             height: '70px',
                             width: '70px',
-                            backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                            backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2',
                             color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
                         },
                         calendarHeaderLevel: {
@@ -75,22 +85,6 @@ export default function Calendar({ username }: CalendarProps) {
                         },
                     }}
                 />
-            </div>
-            <div style={{ marginLeft: '150px' }}>
-                <h2
-                    style={{
-                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
-                    }}
-                >
-                    Journal of
-                </h2>
-                <h1
-                    style={{
-                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
-                    }}
-                >
-                    {username}
-                </h1>
             </div>
         </Container>
     );
