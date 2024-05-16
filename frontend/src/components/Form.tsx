@@ -54,31 +54,36 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
     };
 
     return (
-        <Container
-            size={920}
+        <Container 
+            size={920} 
             my={40}
-            style={{
-                backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2',
-                color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+            style={{ 
+                backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2',
+                color: '#EAD8C2',
                 padding: '40px',
-                borderRadius: '8px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 width: '100%',
                 maxWidth: '500px',
                 margin: '0 auto'
             }}
         >
-            <Title
-                order={1}
-                style={{
-                    marginBottom: '20px',
-                    color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F',
-                    fontFamily: 'Inter'
+            <Title 
+                order={1} 
+                style={{ 
+                    marginBottom: '20px', 
+                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                    fontFamily: 'Inter' 
                 }}
             >
                 {method === "login" ? "Login" : "Register"}
             </Title>
-            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <Paper
+                withBorder
+                shadow="md"
+                p={30}
+                mt={30}
+                radius="md"
+                style={{ backgroundColor: '#543F3F' }}
+            >
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                     <TextInput
                         withAsterisk
@@ -95,12 +100,12 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
                     <Button
                         type="submit"
                         loading={loading}
-                        style={{
-                            backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2',
-                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
-                            fontWeight: 'bold',
-                            width: '100%',
-                            marginTop: '20px'
+                        style={{ 
+                            backgroundColor: computedColorScheme === 'light' ? '#413030' : '#EAD8C2',
+                            color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F',
+                            fontWeight: 'bold', 
+                            width: '100%', 
+                            marginTop: '20px' 
                         }}
                     >
                         {method === "login" ? "Login" : "Register"}
