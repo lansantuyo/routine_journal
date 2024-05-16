@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, List, Title, Text, Loader } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import {Container, Grid, Card, Text, Button, Loader, Title, useComputedColorScheme} from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import api from '../api'; // Make sure to import your API module
 
 interface JournalEntry {
@@ -12,6 +12,8 @@ interface JournalEntry {
 const JournalEntriesPage: React.FC = () => {
     const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const computedColorScheme = useComputedColorScheme('light');
 
     useEffect(() => {
         const fetchJournalEntries = async () => {
@@ -29,6 +31,10 @@ const JournalEntriesPage: React.FC = () => {
         fetchJournalEntries();
     }, []);
 
+    const handleNavigate = (date: string) => {
+        navigate(`/Journal?date=${date}`);
+    };
+
     if (loading) {
         return <Loader />;
     }
@@ -36,15 +42,25 @@ const JournalEntriesPage: React.FC = () => {
     return (
         <Container>
             <Title order={1}>Journal Entries</Title>
-            <List spacing="sm" size="sm" center>
+            <Grid>
                 {journalEntries.map(entry => (
-                    <List.Item key={entry.date}>
-                        <Link to={`/Journal?date=${entry.date}`}>
-                            <Text>{entry.date} - {entry.title}</Text>
-                        </Link>
-                    </List.Item>
+                    <Grid.Col key={entry.id} span={12}>
+                        <Card shadow="sm" padding="lg">
+                            <Text>{entry.title || "No Title"}</Text>
+                            <Text size="sm" color="dimmed">{entry.date}</Text>
+                            <Button
+                                onClick={() => handleNavigate(entry.date)}
+                                style = {{
+                                    backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2',
+                                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
+                                }}
+                            >
+                                View Details
+                            </Button>
+                        </Card>
+                    </Grid.Col>
                 ))}
-            </List>
+            </Grid>
         </Container>
     );
 };
