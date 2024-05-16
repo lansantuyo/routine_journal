@@ -3,7 +3,7 @@ import { ACCESS_TOKEN } from "./constants";
 
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.REACT_APP_API_BASE_URL,
 });
 
 api.interceptors.request.use(
