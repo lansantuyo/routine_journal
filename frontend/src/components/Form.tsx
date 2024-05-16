@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextInput, PasswordInput, Button, Paper, Title, Container, useMantineColorScheme, useComputedColorScheme } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Paper, Title, Container, useMantineColorScheme, useComputedColorScheme, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
@@ -54,10 +54,10 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
     };
 
     return (
-        <Container 
-            size={920} 
+        <Container
+            size={920}
             my={40}
-            style={{ 
+            style={{
                 backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2',
                 color: '#EAD8C2',
                 padding: '40px',
@@ -66,12 +66,12 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
                 margin: '0 auto'
             }}
         >
-            <Title 
-                order={1} 
-                style={{ 
-                    marginBottom: '20px', 
+            <Title
+                order={1}
+                style={{
+                    marginBottom: '20px',
                     color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
-                    fontFamily: 'Inter' 
+                    fontFamily: 'Inter'
                 }}
             >
                 {method === "login" ? "Login" : "Register"}
@@ -100,17 +100,34 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
                     <Button
                         type="submit"
                         loading={loading}
-                        style={{ 
+                        style={{
                             backgroundColor: computedColorScheme === 'light' ? '#413030' : '#EAD8C2',
                             color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F',
-                            fontWeight: 'bold', 
-                            width: '100%', 
-                            marginTop: '20px' 
+                            fontWeight: 'bold',
+                            width: '100%',
+                            marginTop: '20px'
                         }}
                     >
                         {method === "login" ? "Login" : "Register"}
                     </Button>
                 </form>
+                {method === "login" && (
+                    <Group mt="md">
+                        <Button
+                            variant="outline"
+                            onClick={() => navigate("/register")}
+                            style={{
+                            backgroundColor: computedColorScheme === 'light' ? '#413030' : '#EAD8C2',
+                            color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F',
+                            fontWeight: 'bold',
+                            width: '100%',
+                            marginTop: '20px'
+                            }}
+                        >
+                            Don't have an account? Register
+                        </Button>
+                    </Group>
+                )}
             </Paper>
         </Container>
     );
