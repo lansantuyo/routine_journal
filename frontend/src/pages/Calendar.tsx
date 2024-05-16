@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import {AppShell, Burger, Container, Space, Group, Stack, Collapse, Select, Grid} from '@mantine/core';
-import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
+import { Grid} from '@mantine/core';
+import { DatePicker  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import { Link } from 'react-router-dom';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import '@mantine/core/styles.css';
