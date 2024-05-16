@@ -5,7 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import api from "../api";
 
-const Form: React.FC<{ route: string; method: "login" | "register"; }> = ({ route, method }) => {
+interface FormProps {
+    route: string;
+    method: "login" | "register";
+    setUsername: (username: string) => void;
+}
+
+const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { setColorScheme } = useMantineColorScheme();
@@ -32,9 +38,10 @@ const Form: React.FC<{ route: string; method: "login" | "register"; }> = ({ rout
         try {
             const { username, password } = values;
             const res = await api.post(route, { username, password });
-            if (method == "login") {
+            if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                setUsername(username); // Set the username in the UserContext
                 navigate("/");
             } else {
                 navigate("/login/");
@@ -47,11 +54,11 @@ const Form: React.FC<{ route: string; method: "login" | "register"; }> = ({ rout
     };
 
     return (
-        <Container 
-            size={920} 
+        <Container
+            size={920}
             my={40}
-            style={{ 
-                backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+            style={{
+                backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2',
                 color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
                 padding: '40px',
                 borderRadius: '8px',
@@ -61,12 +68,12 @@ const Form: React.FC<{ route: string; method: "login" | "register"; }> = ({ rout
                 margin: '0 auto'
             }}
         >
-            <Title 
-                order={1} 
-                style={{ 
-                    marginBottom: '20px', 
+            <Title
+                order={1}
+                style={{
+                    marginBottom: '20px',
                     color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F',
-                    fontFamily: 'Inter' 
+                    fontFamily: 'Inter'
                 }}
             >
                 {method === "login" ? "Login" : "Register"}
@@ -85,15 +92,15 @@ const Form: React.FC<{ route: string; method: "login" | "register"; }> = ({ rout
                         {...form.getInputProps('password')}
                         style={{ marginBottom: '20px' }}
                     />
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         loading={loading}
-                        style={{ 
-                            backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                        style={{
+                            backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2',
                             color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
-                            fontWeight: 'bold', 
-                            width: '100%', 
-                            marginTop: '20px' 
+                            fontWeight: 'bold',
+                            width: '100%',
+                            marginTop: '20px'
                         }}
                     >
                         {method === "login" ? "Login" : "Register"}
