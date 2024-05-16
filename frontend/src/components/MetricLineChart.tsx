@@ -26,6 +26,7 @@ interface Props {
 const MetricsLineCharts: React.FC<Props> = ({ activities }) => {
     // This map will hold dates as keys and an object of metric names to values as the value
     const dataByDate: Record<string, Record<string, number>> = {};
+    const metricNames = new Set<string>();
 
     activities.forEach(activity => {
         const { date } = activity;
@@ -37,6 +38,8 @@ const MetricsLineCharts: React.FC<Props> = ({ activities }) => {
         activity.metrics.forEach(metric => {
             // Add each metric value under its name at the current date
             dataByDate[date][metric.metric_type.name] = parseFloat(metric.value);
+            // Collect unique metric names
+            metricNames.add(metric.metric_type.name);
         });
     });
 
@@ -44,6 +47,11 @@ const MetricsLineCharts: React.FC<Props> = ({ activities }) => {
     const chartData = Object.entries(dataByDate).map(([date, metrics]) => ({
         date,
         ...metrics
+    }));
+
+    const series = Array.from(metricNames).map((name, index) => ({
+        name,
+        color: `hsl(${(index * 360) / metricNames.size}, 100%, 50%)`
     }));
 
     console.log(chartData);  // Logging the final structure to see the result
@@ -55,10 +63,7 @@ const MetricsLineCharts: React.FC<Props> = ({ activities }) => {
                 data={chartData}
                 dataKey="date"
                 h={200}
-                series={[
-                    { name: 'Miles ran', color: 'blue' },
-                    { name: 'Time spent', color: 'red' }  // You can add more series as needed
-                ]}
+                series={series}
                 curveType="linear"
                 // xScaleType="time"
             />
