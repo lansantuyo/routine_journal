@@ -281,7 +281,8 @@ const JournalEntryPage: React.FC = () => {
                 />
 
                 <TextEditor initialContent={content} onContentChange={setContent} />
-                <Button 
+                <br />
+                <Button
                     onClick={() => setDrawerOpened(true)}
                     style={{ 
                         backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
@@ -299,9 +300,9 @@ const JournalEntryPage: React.FC = () => {
                 padding="xl"
                 size="lg"
                 position="right"
-                style={{ 
-                    backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2', 
-                    color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                style={{
+                    backgroundColor: computedColorScheme === 'dark' ? '#2D2222' : '#EAD8C2',
+                    color: '#EAD8C2',
                 }}
             >
                 <Autocomplete
@@ -344,6 +345,7 @@ const JournalEntryPage: React.FC = () => {
                         </Accordion.Item>
                     ))}
                 </Accordion>
+                <br />
                 <Button 
                     onClick={() => setModalOpened(true)}
                     style={{ 
