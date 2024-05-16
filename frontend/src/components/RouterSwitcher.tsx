@@ -24,7 +24,7 @@ const RouterSwitcher: React.FC<RouterSwitcherProps> = ({ username }) => {
             <Route path="/Activities/:pk" element={<ActivityDetailsPage />} />
             <Route path="/" element={<Calendar username={username}/>} />
             <Route path="/Detail" element={<ActivityDetailsPage />} />
-            <Route path="/Timer" element={<TimerPage />} />
+            {/*<Route path="/Timer" element={<TimerPage />} />*/}
         </Routes>
     );
 };

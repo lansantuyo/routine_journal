@@ -70,22 +70,22 @@ const Header = ({ toggleDesktop, toggleMobile, mobileOpened, desktopOpened }: an
                     >
                         Activities
                     </NavLink>
-                    <NavLink 
-                        to="/Timer" 
-                        style={{ 
-                            marginLeft: '10px', 
-                            color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',
-                            fontWeight: 'bold',
-                            textDecoration: 'none',
-                            padding: '5px 10px',
-                            borderRadius: '5px',
-                            transition: 'all 0.3s ease',
-                            backgroundColor: location.pathname === '/Timer' ? (computedColorScheme === 'dark' ? '#543F3F' : '#C0A18D') : 'transparent',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Timer
-                    </NavLink>
+                    {/*<NavLink */}
+                    {/*    to="/Timer" */}
+                    {/*    style={{ */}
+                    {/*        marginLeft: '10px', */}
+                    {/*        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F',*/}
+                    {/*        fontWeight: 'bold',*/}
+                    {/*        textDecoration: 'none',*/}
+                    {/*        padding: '5px 10px',*/}
+                    {/*        borderRadius: '5px',*/}
+                    {/*        transition: 'all 0.3s ease',*/}
+                    {/*        backgroundColor: location.pathname === '/Timer' ? (computedColorScheme === 'dark' ? '#543F3F' : '#C0A18D') : 'transparent',*/}
+                    {/*        cursor: 'pointer'*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    Timer*/}
+                    {/*</NavLink>*/}
                     <NavLink
                         to="/JournalEntries"
                         style={{
