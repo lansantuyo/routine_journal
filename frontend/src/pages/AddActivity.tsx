@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { DateTimePicker } from '@mantine/dates';
+import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import '../styles/AddActivityForm.css';
 
 function AddActivityForm() {
@@ -8,6 +9,12 @@ function AddActivityForm() {
   const [description, setDescription] = useState('');
   const [frequency, setFrequency] = useState('');
   const [start_date, setStartDate] = useState<Date | null>(new Date());
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme('light');
+
+  const toggleColorScheme = () => {
+      setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +27,14 @@ function AddActivityForm() {
   };
 
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
+    <form 
+      className="form-container"
+      onSubmit={handleSubmit}
+      style={{ 
+        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+      }}
+    >
       <input type="text" value={activity_name} onChange={(e) => setName(e.target.value)} placeholder="Activity Name" />
       <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
       <input type ="text" value={frequency} onChange={(e) => setFrequency(e.target.value)} placeholder = "Frequency" />

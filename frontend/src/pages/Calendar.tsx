@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Grid} from '@mantine/core';
-import { DatePicker  } from '@mantine/dates';
+import {AppShell, Burger, Container, Space, Group, Stack, Collapse, Select, Grid} from '@mantine/core';
+import { DatePicker, DatePickerProps, Day  } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
+import { Link } from 'react-router-dom';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import '@mantine/core/styles.css';
@@ -11,6 +12,12 @@ export default function Calendar() {
     const [value, setValue] = useState<Date | null>(null);
     const [opened, { toggle: toggleDesktop }] = useDisclosure();
     const navigate = useNavigate(); // Hook for navigation
+    const { setColorScheme } = useMantineColorScheme();
+    const computedColorScheme = useComputedColorScheme('light');
+
+    const toggleColorScheme = () => {
+        setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light');
+    }
 
     const handleDateChange = (selectedDate: Date | null) => {
         setValue(selectedDate);
@@ -27,8 +34,13 @@ export default function Calendar() {
 
 
     return (
-        <Grid>
-            <Grid.Col span={6}>
+        <Container 
+            style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center'
+        }}>
+            <div>
                 <DatePicker
                     allowDeselect={true}
                     value={value}
@@ -39,7 +51,6 @@ export default function Calendar() {
                     monthLabelFormat="MMMM"
                     styles={{
                         day: {
-                            backgroundColor: '#ead8c2',
                             borderRadius: '4%',
                             padding: '5px',
                             margin: '10px',
@@ -48,6 +59,8 @@ export default function Calendar() {
                             fontSize: '32px',
                             height: '70px',
                             width: '70px',
+                            backgroundColor: computedColorScheme === 'light' ? '#543F3F' : '#EAD8C2', 
+                            color: computedColorScheme === 'light' ? '#EAD8C2' : '#543F3F'
                         },
                         calendarHeaderLevel: {
                             fontFamily: 'Inter',
@@ -61,11 +74,25 @@ export default function Calendar() {
                         },
                     }}
                 />
-            </Grid.Col>
-            <Grid.Col span={6}>
-                <h2>Journal of</h2>
-                <h1>USERNAME :D</h1>
-            </Grid.Col>
-        </Grid>
+            </div>
+            <div style={{ marginLeft: '150px' }}>
+                <h2
+                    style={{
+                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    Journal of
+                </h2>
+                <h1
+                    style={{
+                        backgroundColor: computedColorScheme === 'dark' ? '#543F3F' : '#EAD8C2', 
+                        color: computedColorScheme === 'dark' ? '#EAD8C2' : '#543F3F'
+                    }}
+                >
+                    USERNAME :D
+                </h1>
+            </div>
+        </Container>
     );
 }
