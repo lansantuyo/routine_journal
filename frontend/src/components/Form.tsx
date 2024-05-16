@@ -38,7 +38,7 @@ const Form: React.FC<FormProps> = ({ route, method, setUsername }) => {
         try {
             const { username, password } = values;
             const res = await api.post(route, { username, password });
-            if (method === "login") {
+            if (method == "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 setUsername(username); // Set the username in the UserContext
